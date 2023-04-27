@@ -1,6 +1,7 @@
 import stylesUrl from "~/styles/forms.css";
 import { json } from "@remix-run/node";
 import { useActionData, useSearchParams } from "@remix-run/react";
+import { login } from "~/utils/auth.server";
 
 export const meta = () => {
     return [{ title: "Log in" }];
@@ -18,6 +19,11 @@ export const action = async ({ request }) => {
 
     if (!username || !password || username.length < 3) {
         return json({ message: "Invalid username or password format" }, { status: 400 });
+    }
+
+    const user = await login(username, password);
+    if (!user || !user.token) {
+        return json({ message: "Invalid username or password or Internal Server Error. Go figure. Backend says: " + user.message}, { status: 401 });
     }
 
     return json({ message: "not implemented" }, { status: 501 });
