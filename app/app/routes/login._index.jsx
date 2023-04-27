@@ -1,15 +1,34 @@
 import stylesUrl from "~/styles/forms.css";
-import { json } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { useActionData, useSearchParams } from "@remix-run/react";
 import { login } from "~/utils/auth.server";
+import jwt_decode from "jwt-decode";
+import { getSession } from "~/cookies";
+import { commitSession } from "../cookies";
 
 export const meta = () => {
     return [{ title: "Log in" }];
-  };
+};
 
 export const links = () => [
     { rel: "stylesheet", href: stylesUrl },
 ]
+
+export const loader = async ({ request }) => {
+    // check if the user is already logged in
+    const session = await getSession(request.headers.get("Cookie"));
+    if (session && session.get("token")) {
+        const decodedToken = jwt_decode(session.get("token"));
+        const cookie = await commitSession(session);
+        if (decodedToken["twofa_passed"]) {
+            return redirect("/", { headers: {"Set-Cookie": cookie} }); // todo: redirect to redirectTo
+        } else {
+            return redirect("/login/2fa", { headers: {"Set-Cookie": cookie} });
+        }
+    } else {
+        return json({});
+    }
+}
 
 export const action = async ({ request }) => {
     const form = await request.formData();
@@ -26,7 +45,20 @@ export const action = async ({ request }) => {
         return json({ message: "Invalid username or password or Internal Server Error. Go figure. Backend says: " + user.message}, { status: 401 });
     }
 
-    return json({ message: "not implemented" }, { status: 501 });
+    const jwtToken = user.token;
+
+    // set cookie
+    const session = await getSession(request.headers.get("Cookie"));
+    session.set("token", jwtToken);
+    const cookie = await commitSession(session);
+
+    const decodedToken = jwt_decode(jwtToken);
+
+    if (!decodedToken["twofa_passed"]) {
+        return redirect("/login/2fa" + (redirectTo ? "?redirectTo=" + redirectTo : ""), { headers: {"Set-Cookie": cookie} });
+    } else {
+        return redirect(redirectTo ? "/" + redirectTo : "/", { headers: {"Set-Cookie": cookie} });
+    }
 }
 
 export default function LoginRoute() {

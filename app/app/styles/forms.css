@@ -8,6 +8,7 @@ main {
     padding-left: 20px;
     padding-right: 20px;
     margin-top: 20px;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.19);
 }
 
 main > h1 {
