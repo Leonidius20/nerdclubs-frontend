@@ -1,0 +1,79 @@
+main {
+    max-width: 400px;
+    /* centering */
+    margin: auto;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 20px;
+}
+
+main > h1 {
+    text-align: center;
+}
+
+main > form > div {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+main > form > button {
+    border-radius: 5px;
+    background-image: linear-gradient(to right, #228B22, #7CFC00);
+    border: none;
+    height: 30px;
+    font-size: large;
+    /* centering */
+    margin: auto;
+    display: block;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    height: 40px;
+    width: 45%;
+}
+
+main > form > button:hover {
+    background-image: linear-gradient(to right, #7CFC00, #228B22);
+}
+
+label {
+    display: block;
+    font-size: large;
+}
+
+input {
+    width: 100%;
+    box-sizing: border-box;
+    /* centering */
+    display: block;
+    margin: auto;
+    height: 35px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 0 1pt rgb(219, 219, 219);
+    transition: .1s;
+    outline: none;
+    font-size: large;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+input:focus {
+    box-shadow: 0 0 3pt 2pt #67cd02;
+    outline-style: none;
+}
+
+#error-message-box {
+    background-color: rgb(255, 234, 3);
+    text-align: center;
+    border-radius: 5px;
+    padding: 0.005em;
+}
+
+#error-message-box:empty {
+    display: none;
+}

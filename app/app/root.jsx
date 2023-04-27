@@ -7,6 +7,11 @@ import {
   ScrollRestoration,
   useMatches
 } from "@remix-run/react";
+import globalStylesUrl from "~/styles/global.css";
+
+export const links = () => {
+  return [{ rel: "stylesheet", href: globalStylesUrl }];
+};
 
 export default function App() {
   const matches = useMatches();

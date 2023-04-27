@@ -1,5 +1,6 @@
 import { Link, useLoaderData, useRouteLoaderData } from "@remix-run/react";
 import { getUsers } from "~/models/user.server";
+import stylesUrl from "~/styles/index.css";
 
 export const meta = () => {
   return [{ title: "New Remix App" }];
@@ -11,6 +12,10 @@ export const loader = async () => {
       "Content-Type": "application/json",
       },
   });
+};
+
+export const links = () => {
+  return [{ rel: "stylesheet", href: stylesUrl }];
 };
 
 export default function Index() {
