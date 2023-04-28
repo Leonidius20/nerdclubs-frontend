@@ -40,3 +40,16 @@ export async function register(username, password, email) {
         }),
     }).then((res) => res.json());
 }
+
+export async function get2faSecret(token) {
+    return await fetch(process.env.BACKEND_URL + "/login/2fa/add", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token,
+        },
+        body: JSON.stringify({
+            token,
+        }),
+    }).then((res) => res.json());
+}

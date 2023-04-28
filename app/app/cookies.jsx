@@ -7,6 +7,15 @@ export const { getSession, commitSession, destroySession } = createCookieSession
     },
 });
 
+export const getToken = async (request) => {
+    const session = await getSession(request.headers.get("Cookie"));
+    if (session && session.get("token")) {
+        return session.get("token");
+    } else {
+        return null;
+    }
+}
+
 export const isUserFullyAuthenticated = async (request) => {
     const session = await getSession(request.headers.get("Cookie"));
     if (session && session.get("token")) {

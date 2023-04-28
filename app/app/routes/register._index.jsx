@@ -1,7 +1,7 @@
 import stylesUrl from "~/styles/forms.css";
 import { json, redirect } from "@remix-run/node";
 import { useActionData, useSearchParams } from "@remix-run/react";
-import { isUserAuthenticated } from "../cookies";
+import { isUserFullyAuthenticated, isUserAuthenticated, is2faEnabled } from "../cookies";
 import { register } from "~/utils/auth.server";
 import { getSession, commitSession } from "~/cookies";
 
@@ -15,9 +15,15 @@ export const links = () => [
 
 export const loader = async ({ request }) => {
     if (await isUserAuthenticated(request)) {
-        redirect("/");
+        // check if 2fa enabled
+        if (await is2faEnabled(request)) {
+            return redirect("/");
+        } else {
+            return redirect("/register/2fa");
+        }
+    } else {
+        return json({});
     }
-    return json({});
 }
 
 export const action = async ({ request }) => {
