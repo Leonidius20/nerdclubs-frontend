@@ -25,3 +25,18 @@ export async function verity2faOtp(otp, token) {
         }),
     }).then((res) => res.json());
 }
+
+export async function register(username, password, email) {
+    return await fetch(process.env.BACKEND_URL + "/users", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+
+        },
+        body: JSON.stringify({
+            username,
+            password,
+            email,
+        }),
+    }).then((res) => res.json());
+}

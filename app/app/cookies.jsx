@@ -16,3 +16,22 @@ export const isUserFullyAuthenticated = async (request) => {
         return false;
     }
 }
+
+export const isUserAuthenticated = async (request) => {
+    const session = await getSession(request.headers.get("Cookie"));
+    if (session && session.get("token")) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+export const is2faEnabled = async (request) => {
+    const session = await getSession(request.headers.get("Cookie"));
+    if (session && session.get("token")) {
+        const decodedToken = jwt_decode(session.get("token"));
+        return decodedToken["twofa_enabled"] === true;
+    } else {
+        return false;
+    }
+}

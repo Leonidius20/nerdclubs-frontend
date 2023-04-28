@@ -2,7 +2,7 @@ import { useActionData, useLoaderData, useSearchParams } from "@remix-run/react"
 import { json, redirect } from "@remix-run/node";
 import stylesUrl from "~/styles/forms.css";
 import { getSession } from "~/cookies";
-import { commitSession } from "../cookies";
+import { commitSession, isUserAuthenticated, isUserFullyAuthenticated } from "../cookies";
 import jwt_decode from "jwt-decode";
 import { verity2faOtp } from "../utils/auth.server";
 

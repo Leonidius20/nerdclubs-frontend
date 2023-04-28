@@ -11,3 +11,16 @@ body {
     background-color: rgb(232,232,232);
     font-family: 'Source Sans', sans-serif;
 }
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    background-image: linear-gradient(to right, #000000, #696969);
+}
+
+main {
+    margin: 10px;
+}
