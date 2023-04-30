@@ -53,3 +53,16 @@ export async function get2faSecret(token) {
         }),
     }).then((res) => res.json());
 }
+
+export async function verify2faEnabling(token, code) {
+    return await fetch(process.env.BACKEND_URL + "/login/2fa/verify", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token,
+            },
+            body: JSON.stringify({
+                otp: code,
+                }),
+            }).then((res) => res.json());
+}

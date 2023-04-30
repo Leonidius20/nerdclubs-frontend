@@ -18,9 +18,9 @@ export const loader = async ({ request }) => {
     // check if the user is already logged in
     if (await isUserAuthenticated(request)) {
         if (await isUserFullyAuthenticated(request)) {
-            return redirect("/", { headers: {"Set-Cookie": cookie} });
+            return redirect("/");
         } else {
-            return redirect("/login/2fa", { headers: {"Set-Cookie": cookie} });
+            return redirect("/login/2fa");
         }
     } else {
         return json({});
