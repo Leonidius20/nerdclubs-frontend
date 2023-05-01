@@ -66,3 +66,17 @@ export async function verify2faEnabling(token, code) {
                 }),
             }).then((res) => res.json());
 }
+
+/**
+ * Check if user's JWT token is valid (has correct signature)
+ * @param {string} token
+ * @returns {Promise<{valid: boolean}>}
+ */
+export async function verifyToken(token) {
+    return await fetch(process.env.BACKEND_URL + "/verifytoken", {
+        method: "GET",
+        headers: {
+            "Authorization": "Bearer " + token,
+        },
+    }).then((res) => res.json());
+}

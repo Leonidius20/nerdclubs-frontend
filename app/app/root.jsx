@@ -8,6 +8,7 @@ import {
   useMatches
 } from "@remix-run/react";
 import globalStylesUrl from "~/styles/global.css";
+import Navbar from "./components/navbar";
 
 export const links = () => {
   return [{ rel: "stylesheet", href: globalStylesUrl }];
@@ -27,6 +28,7 @@ export default function App() {
         <Links />
       </head>
       <body>
+        <Navbar/>
         <Outlet />
         { /* <ScrollRestoration /> */ }
         {includeScripts ? <Scripts /> : null}

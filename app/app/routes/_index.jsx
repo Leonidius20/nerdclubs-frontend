@@ -1,4 +1,4 @@
-import { Link, useLoaderData, useRouteLoaderData } from "@remix-run/react";
+import { Link, Outlet, useLoaderData } from "@remix-run/react";
 import { getUsers } from "~/models/user.server";
 import stylesUrl from "~/styles/index.css";
 import { isUserFullyAuthenticated } from "../cookies";
@@ -25,20 +25,26 @@ export default function Index() {
 
   return (
     <div style={{ lineHeight: "1.4" }}>
-      <Navbar/>
       <main>
         <h1>Welcome</h1>
       <ul>
         <li>
           {isUserLoggedIn ? <Link to="/logout">Log out</Link> : <Link to="/register">Register</Link>} 
         </li>
+        
+          {!isUserLoggedIn 
+          ? 
+          <li><Link to="/login">Log in</Link></li> 
+          : null
+          }
+        
         <li>
-          {!isUserLoggedIn ? <Link to="/login">Log in</Link> : null}
+          {isUserLoggedIn && <Link to="/account">My account</Link>}
         </li>
       </ul>
       <div>
         <h2>Users</h2>
-        {JSON.stringify(users)}
+        <p>{JSON.stringify(users)}</p>
       </div>
       </main>
     </div>

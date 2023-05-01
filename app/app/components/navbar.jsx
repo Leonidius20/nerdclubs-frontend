@@ -1,12 +1,14 @@
-export default function Navbar() {
+
+
+
+export default function Navbar({ isUserLoggedIn }) {
     return (
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/login">Log in</a></li>
-                <li><a href="/register">Register</a></li>
-                <li><a href="/logout">Log out</a></li>
-            </ul>
+        <nav>    
+            <a href="/">Home</a>
+            <a href="/login">Log in</a>
+            <a href="/register">Register</a>
+            <a href="/logout">Log out</a>
+            <a href="/account">Account</a>
         </nav>
     )
 }

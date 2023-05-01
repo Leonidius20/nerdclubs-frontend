@@ -1,0 +1,53 @@
+main {
+    max-width: 400px;
+    /* centering */
+    margin: auto;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+main > h1 {
+    text-align: center;
+    margin-top: 15px;
+}
+
+#error-message-box {
+    background-color: rgb(255, 234, 3);
+    text-align: center;
+    border-radius: 5px;
+    padding: 1em;
+    margin-top: 10px;
+}
+
+h2 {
+    margin-top: 15px;
+}
+
+.link-button {
+    border-radius: 5px;
+    background-color: #d6d6d6;
+    border: none;
+    height: 30px;
+    font-size: large;
+    /* centering */
+    margin: auto;
+    display: block;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    height: 40px;
+    width: 45%;
+    text-decoration: none;
+    color: black;
+    text-align: center;
+    line-height: 40px;
+}
+
+.link-button:hover {
+    box-shadow: 0 0 3pt 2pt #a9a9a9;
+}
