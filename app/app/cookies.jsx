@@ -71,7 +71,7 @@ export async function requireUserSession(request) {
     }
 
     // verify token with server
-    const response = await verifyToken(session.get("token"));
+    /*const response = await verifyToken(session.get("token"));
     if (!response || (response.valid !== true)) {
         // if token is invalid, redirect to login page and clear cookie
         await destroySession(session);
@@ -89,7 +89,7 @@ export async function requireUserSession(request) {
     if (decodedToken["twofa_passed"] !== true) {
         // if 2fa is not passed, redirect to 2fa page
         throw redirect("/login/2fa");
-    }
+    }*/
 
     // if 2fa is passed, let user in
     return session;

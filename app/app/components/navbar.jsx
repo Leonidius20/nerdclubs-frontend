@@ -5,10 +5,10 @@ export default function Navbar({ isUserLoggedIn }) {
     return (
         <nav>    
             <a href="/">Home</a>
-            <a href="/login">Log in</a>
-            <a href="/register">Register</a>
-            <a href="/logout">Log out</a>
-            <a href="/account">Account</a>
+            {!isUserLoggedIn ? <a href="/login">Log in</a> : null }
+            {!isUserLoggedIn ? <a href="/register">Register</a> : null }
+            {isUserLoggedIn ? <a href="/logout">Log out</a> : null }
+            {isUserLoggedIn ? <a href="/account">Account</a> : null }
         </nav>
     )
 }

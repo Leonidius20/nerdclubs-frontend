@@ -4,6 +4,7 @@ import { useActionData, useSearchParams } from "@remix-run/react";
 import { isUserFullyAuthenticated, isUserAuthenticated, is2faEnabled } from "../cookies";
 import { register } from "~/utils/auth.server";
 import { getSession, commitSession } from "~/cookies";
+import RegisterView from "../views/register";
 
 export const meta = () => {
     return [{ title: "Register" }];
@@ -15,7 +16,6 @@ export const links = () => [
 
 export const loader = async ({ request }) => {
     if (await isUserAuthenticated(request)) {
-        // check if 2fa enabled
         if (await is2faEnabled(request)) {
             return redirect("/");
         } else {
@@ -62,33 +62,8 @@ export const action = async ({ request }) => {
 
 export default function Register() {
     const actionData = useActionData();
+    const errorMessage = actionData?.message;
     return (
-        <main>
-            <h1>Register</h1>
-            <div id="error-message-box">
-                {actionData?.message && <p role="alert">{actionData.message}</p>}
-            </div>
-            <form method="post">
-                <div>
-                    <label htmlFor="username">Username</label>
-                    <input type="text" id="username" name="username" placeholder="Username" required />
-                    <small>between 3 and 20 characters</small>
-                </div>
-                <div>
-                    <label htmlFor="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Email" required />
-                </div>
-                <div>
-                    <label htmlFor="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Password" required />
-                    <small>between 8 and 20 characters</small>
-                </div>
-                <div>
-                    <label htmlFor="password2">Repeat password</label>
-                    <input type="password" id="password2" name="password2" placeholder="Repeat password" required />
-                </div>
-                <button type="submit">Register</button>
-            </form>
-        </main>
+       <RegisterView errrorMessage={errorMessage}/>
     )
 }
