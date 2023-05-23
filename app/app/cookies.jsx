@@ -18,10 +18,31 @@ export const getToken = async (request) => {
     }
 }
 
-export const isUserFullyAuthenticated = async (request) => {
+export const getUserInfoOrNull = async (request) => {
     const session = await getSession(request.headers.get("Cookie"));
     if (session && session.get("token")) {
-        const decodedToken = jwt_decode(session.get("token"));
+        const token = session.get("token");
+        const decodedToken = jwt_decode(token);
+        return {
+            userId: decodedToken["user_id"],
+            username: decodedToken["username"],
+            twofaPassed: decodedToken["twofa_passed"],
+            twofaEnabled: decodedToken["twofa_enabled"],
+        };
+    } else {
+        return null;
+    }
+}
+
+export const isUserFullyAuthenticated = async (request) => {
+    const session = await getSession(request.headers.get("Cookie"));
+
+    if (session && session.get("token")) {
+        const token = session.get("token");
+        const decodedToken = jwt_decode(token);
+        request._userId = decodedToken["user_id"];
+        request._username = decodedToken["username"];
+        request._token = token;
         return decodedToken["twofa_passed"];
     } else {
         return false;

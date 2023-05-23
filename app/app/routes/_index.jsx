@@ -1,9 +1,11 @@
-import { Link, Outlet, useLoaderData } from "@remix-run/react";
+import { Link, Outlet, useLoaderData, useActionData } from "@remix-run/react";
 import { getUsers } from "~/models/user.server";
 import stylesUrl from "~/styles/index.css";
 import { isUserFullyAuthenticated } from "../cookies";
 import { json } from "@remix-run/node";
-import Navbar from "../components/navbar";
+import { Form } from "@remix-run/react";
+import CommunitiesList from "../components/communities.list";
+import { getCommunities } from "../models/communities.server";
 
 export const meta = () => {
   return [{ title: "Homepage" }];
@@ -13,7 +15,27 @@ export const loader = async ({ request }) => {
   const users = await getUsers();
   const isUserLoggedIn = await isUserFullyAuthenticated(request);
 
-  return json({ users, isUserLoggedIn });
+  // load some communities
+  const communities = await getCommunities();
+
+  return json({ users, isUserLoggedIn, communities });
+};
+
+export const action = async ({ request }) => {
+  const form = await request.formData();
+  const query = form.get("query");
+
+  try {
+    const communities = await getCommunities(query);
+
+    if (communities.error) return json({ message: communities.message });
+
+    return json({ communities });
+  } catch (err) {
+    console.log(err);
+    return json({ message: "FR: " + err.message });
+  }
+  
 };
 
 export const links = () => {
@@ -21,32 +43,21 @@ export const links = () => {
 };
 
 export default function Index() {
-  const { users, isUserLoggedIn } = useLoaderData();
+  let { communities } = useLoaderData();
+  const actionData = useActionData();
+
+  if (actionData) {
+    communities = actionData.communities;
+  }
 
   return (
-    <div style={{ lineHeight: "1.4" }}>
-      <main>
-        <h1>Welcome</h1>
-      <ul>
-        <li>
-          {isUserLoggedIn ? <Link to="/logout">Log out</Link> : <Link to="/register">Register</Link>} 
-        </li>
-        
-          {!isUserLoggedIn 
-          ? 
-          <li><Link to="/login">Log in</Link></li> 
-          : null
-          }
-        
-        <li>
-          {isUserLoggedIn && <Link to="/account">My account</Link>}
-        </li>
-      </ul>
-      <div>
-        <h2>Users</h2>
-        <p>{JSON.stringify(users)}</p>
-      </div>
-      </main>
-    </div>
+    <main>
+      <h1>Welcome</h1>
+      <Form method="post">
+        <input type="search" name="query" placeholder="Search communities..." />
+        <button type="submit">Search</button>
+      </Form>
+      <CommunitiesList communities={communities} />
+    </main>
   );
 }

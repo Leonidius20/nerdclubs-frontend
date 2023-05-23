@@ -1,0 +1,16 @@
+.cover {
+    /*background-image: url("../../../assets/img/cover.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;*/
+    height: 30vh;
+    width: 100%;
+    background-color: blueviolet;
+    position: relative;
+}
+
+/*.cover > h1, .cover > p {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}*/

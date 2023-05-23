@@ -77,7 +77,7 @@ label {
     font-size: large;
 }
 
-input {
+input, textarea {
     width: 100%;
     box-sizing: border-box;
     /* centering */
@@ -96,7 +96,7 @@ input {
     padding-right: 10px;
 }
 
-input:focus {
+input:focus, textarea:focus {
     box-shadow: 0 0 3pt 2pt #a9a9a9;
     outline-style: none;
 }

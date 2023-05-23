@@ -20,7 +20,7 @@ export const links = () => {
 
 export const loader = async ({ request }) => {
   const isUserLoggedIn = await isUserFullyAuthenticated(request); 
-  return json({ isUserLoggedIn });
+  return json({ isUserLoggedIn, username: request._username });
 };
 
 export default function App() {
@@ -28,7 +28,7 @@ export default function App() {
 
   const includeScripts = matches.some((match) => match.handle ? match.handle.hydrate : undefined);
 
-  const { isUserLoggedIn } = useLoaderData();
+  const { isUserLoggedIn, username } = useLoaderData();
 
   return (
     <html lang="en">
@@ -39,7 +39,7 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Navbar isUserLoggedIn={isUserLoggedIn}/>
+        <Navbar isUserLoggedIn={isUserLoggedIn} username={username}/>
         <Outlet />
         { /* <ScrollRestoration /> */ }
         {includeScripts ? <Scripts /> : null}
