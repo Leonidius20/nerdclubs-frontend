@@ -96,6 +96,10 @@ input, textarea {
     padding-right: 10px;
 }
 
+textarea {
+    resize: vertical;
+}
+
 input:focus, textarea:focus {
     box-shadow: 0 0 3pt 2pt #a9a9a9;
     outline-style: none;

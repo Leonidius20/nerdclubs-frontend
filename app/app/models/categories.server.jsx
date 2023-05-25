@@ -28,3 +28,15 @@ export async function createCategory(request, communityId, name, description) {
             }),
         }).then((res) => res.json());
 }
+
+export async function getCategory(categoryId) {
+    return await fetch(
+        `${process.env.BACKEND_URL}/categories/${categoryId}`,
+        {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }).then((res) => res.json());
+        
+}
