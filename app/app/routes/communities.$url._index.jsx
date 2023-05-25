@@ -4,6 +4,8 @@ import { getCommunity } from "../models/communities.server";
 
 import stylesUrl from "~/styles/community.page.css";
 import { getUserInfoOrNull } from "../cookies";
+import CommunityView from "../views/community/community.view";
+import { getCategories } from "../models/categories.server";
 
 export const meta = ({ data }) => {
     const communityName = data?.community?.name || "Community";
@@ -19,8 +21,10 @@ export async function loader({ request, params }) {
     try {
         const community = await getCommunity(request, params.url);
         if (community.error) return json({ message: community.message });
+        const id = community.id;
+        const categories = await getCategories(id);
 
-        return json({ community });
+        return json({ community, categories });
     } catch (err) {
         console.log(err);
         return json({ message: "FR: " + err.message });
@@ -29,31 +33,9 @@ export async function loader({ request, params }) {
 
 export default function Community() {
     const data = useLoaderData();
+    const message = data?.message;
+    const community = data?.community;
+    const categories = data?.categories;
 
-    return (
-        <div>
-            {
-                data?.message &&
-                <div id="error-message-box">
-                    <p role="alert">{data.message}</p>
-                </div>
-            }
-            {
-                data?.community &&
-                <>
-                    <div class="cover">
-                        <h1>{data.community.name}</h1>
-                        <p>{data.community.description}</p>
-                        {
-                            data.community.is_owner && //todo: isMOderator
-                            <a href={`/communities/${data.community.url}/addcategory`}>Add category</a>
-                        }
-                    </div>
-                    <main>
-                        <h2>Post categories</h2>
-                    </main>
-                </>
-            }
-        </div>
-    );
+    return <CommunityView message={message} community={community} categories={categories} />;
 }
