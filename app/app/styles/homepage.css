@@ -1,0 +1,10 @@
+main > form {
+    display: flex;
+    column-gap: 10px;
+}
+
+main > form > input {
+    flex: 1;
+}
+
+

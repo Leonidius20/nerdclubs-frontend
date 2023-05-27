@@ -1,6 +1,8 @@
 import { Link, Outlet, useLoaderData, useActionData } from "@remix-run/react";
 import { getUsers } from "~/models/user.server";
 import stylesUrl from "~/styles/index.css";
+import homepageCss from "~/styles/homepage.css";
+import communityCard from "~/styles/community.card.css";
 import { isUserFullyAuthenticated } from "../cookies";
 import { json } from "@remix-run/node";
 import { Form } from "@remix-run/react";
@@ -9,6 +11,14 @@ import { getCommunities } from "../models/communities.server";
 
 export const meta = () => {
   return [{ title: "Homepage" }];
+};
+
+export const links = () => {
+  return [
+    { rel: "stylesheet", href: stylesUrl },
+    { rel: "stylesheet", href: homepageCss },
+    { rel: "stylesheet", href: communityCard },
+  ];
 };
 
 export const loader = async ({ request }) => {
@@ -38,9 +48,7 @@ export const action = async ({ request }) => {
   
 };
 
-export const links = () => {
-  return [{ rel: "stylesheet", href: stylesUrl }];
-};
+
 
 export default function Index() {
   let { communities } = useLoaderData();
@@ -52,7 +60,6 @@ export default function Index() {
 
   return (
     <main>
-      <h1>Welcome</h1>
       <Form method="post">
         <input type="search" name="query" placeholder="Search communities..." />
         <button type="submit">Search</button>

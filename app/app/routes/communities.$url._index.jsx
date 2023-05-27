@@ -3,6 +3,7 @@ import { useLoaderData } from "@remix-run/react";
 import { getCommunity } from "../models/communities.server";
 
 import stylesUrl from "~/styles/community.page.css";
+import communityCardCss from "~/styles/community.card.css";
 import { getUserInfoOrNull } from "../cookies";
 import CommunityView from "../views/community/community.view";
 import { getCategories } from "../models/categories.server";
@@ -15,6 +16,7 @@ export const meta = ({ data }) => {
 
 export const links = () => [
     { rel: "stylesheet", href: stylesUrl },
+    { rel: "stylesheet", href: communityCardCss },
 ];
 
 export async function loader({ request, params }) {

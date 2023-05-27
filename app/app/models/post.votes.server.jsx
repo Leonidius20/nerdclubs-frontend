@@ -1,8 +1,8 @@
 import { getToken } from "../cookies";
 
-export async function getPostsInCategory(category_id) {
+export async function getVotesForPost(post_id) {
     return await fetch(
-        `${process.env.BACKEND_URL}/posts?category_id=${category_id}`,
+        `${process.env.BACKEND_URL}/post-votes/${post_id}/`,
         {
             method: "GET",
             headers: {
@@ -12,9 +12,9 @@ export async function getPostsInCategory(category_id) {
 
 }
 
-export async function createPost(request, category_id, title, content) {
+export async function createVoteForPost(request, post_id, is_positive) {
     return await fetch(
-        `${process.env.BACKEND_URL}/posts`,
+        `${process.env.BACKEND_URL}/post-votes`,
         {
             method: "POST",
             headers: {
@@ -22,21 +22,21 @@ export async function createPost(request, category_id, title, content) {
                 "Authorization": "Bearer " + await getToken(request),
             },
             body: JSON.stringify({
-                category_id,
-                title,
-                content
+                post_id,
+                is_positive
             }),
         }).then((res) => res.json());
-
+        
 }
 
-export async function getPost(post_id) {
+export async function getMyVoteForPost(request, post_id) {
     return await fetch(
-        `${process.env.BACKEND_URL}/posts/${post_id}`,
+        `${process.env.BACKEND_URL}/post-votes/${post_id}/my`,
         {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": "Bearer " + await getToken(request),
             },
         }).then((res) => res.json());
 

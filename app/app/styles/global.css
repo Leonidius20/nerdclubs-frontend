@@ -35,3 +35,93 @@ nav a {
 main {
     margin: 10px;
 }
+
+
+input, textarea {
+    width: 100%;
+    box-sizing: border-box;
+    /* centering */
+    display: block;
+    margin: auto;
+    height: 35px;
+    /* margin-top: 10px; */
+    margin-bottom: 5px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 0 1pt rgb(219, 219, 219);
+    transition: .1s;
+    outline: none;
+    font-size: large;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+input:focus, textarea:focus {
+    box-shadow: 0 0 3pt 2pt #a9a9a9;
+    outline-style: none;
+}
+
+button, .link-button {
+    border-radius: 5px;
+    background-color: #d6d6d6;
+    border: none;
+    height: 35px;
+    line-height: 35px;
+    font-size: large;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.link-button {
+    text-decoration: none;
+    color: black;
+    text-align: center;
+    display: block;
+}
+
+button:hover, link-button:hover {
+    box-shadow: 0 0 3pt 2pt #a9a9a9;
+}
+
+.vote-form {
+    display: inline-block;
+}
+
+.vote-form button {
+    font-weight: bold;
+}
+
+.vote-block span {
+    font-size: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.rating-highlighted {
+    color: darkblue;
+    font-weight: bold;
+}
+
+.button-pressed {
+    background-color: #a9a9a9;
+}
+
+.button-pressed:hover {
+    box-shadow: none;
+}
+
+#error-message-box {
+    background-color: rgb(255, 234, 3);
+    text-align: center;
+    border-radius: 5px;
+    padding: 1em;
+    margin-top: 10px;
+}
+
+#error-message-box:empty {
+    display: none;
+}

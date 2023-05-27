@@ -1,28 +1,48 @@
 import OptionalErrorMessage from "../../components/optional.error.message";
+import ParsedDate from "../../components/date";
+import markdownToTxt from 'markdown-to-txt';
 
 export default function CategoryView({ message, communityUrl, category, posts }) {
     return (
         <main>
             <OptionalErrorMessage message={message} />
-            <h1>{category.name}</h1>
-            <p>{category.description}</p>
-            <a href={`/communities/${communityUrl}/categories/${category.id}/addpost`}>Add post</a>
-            <div className="row">
-                {posts.map((post) => (
-                    <div key={post.id}>
-                        <div className="card-body">
-                            <h5 >{post.title}</h5>
-                            <p>{post.content}</p>
-                            <div >
-                                <div className="btn-group">
-                                    <a href={`/communities/${communityUrl}/categories/${category.id}/posts/${post.post_id}`} className="btn btn-sm btn-outline-secondary">View</a>
-                                </div>
-                                <small className="text-muted">{post.created_at}</small>
-                            </div>
+            <div className="category-header">
+                <div>
+                    <h2>{category.name}</h2>
+                    <p>{category.description}</p>
+                </div>
+                <div>
+                    <a href={`/communities/${communityUrl}/categories/${category.id}/addpost`}  className="link-button">+ Add post</a>
+                </div>
+            </div>
+            
+            
+            <div>
+                {posts.map((post) => {
+                    const content = markdownToTxt(post.content);
+                    const initialLength = content.length;
+                    const maxLength = 1000;
+                    const truncatedContent = content.slice(0, maxLength);
+                    const truncated = initialLength > maxLength;
+
+                    return(
+                    <div key={post} className="community-card">
+                        
+                        <a href={`/communities/${communityUrl}/categories/${category.id}/posts/${post.post_id}`}>
+                            <h3>{post.title}</h3>
+                        </a>
+                        <div className="post-card-main-content">
+                            <p>{truncatedContent}</p>
+                            {truncated && <div className="fade-overlay"></div>}
                         </div>
+                            
+                            <div >
+                                <small><ParsedDate dateString={post.created_at} /></small>
+                            </div>
+                        
                     
-                    </div>
-                ))}
+                    </div>);
+                })}
             </div>
         </main>
     )

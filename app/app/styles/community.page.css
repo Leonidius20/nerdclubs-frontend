@@ -3,10 +3,11 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;*/
-    height: 30vh;
-    width: 100%;
-    background-color: blueviolet;
+    height: 20vh;
+    background-color: lightgray;
     position: relative;
+    padding-top: 30px;
+    padding-left: 30px;
 }
 
 /*.cover > h1, .cover > p {
@@ -14,3 +15,31 @@
     bottom: 0;
     left: 0;
 }*/
+
+.community-nav {
+    background-color: #000000;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.community-nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    transition: 0.5s;
+}
+
+.community-nav > div {
+    display: flex;
+}
+
+main {
+    padding-top: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin: 0 auto;
+    max-width: 800px;
+}
