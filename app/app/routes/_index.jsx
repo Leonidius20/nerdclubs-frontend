@@ -63,6 +63,7 @@ export default function Index() {
       <Form method="post">
         <input type="search" name="query" placeholder="Search communities..." />
         <button type="submit">Search</button>
+        <a href="/create/community" className="link-button">Create new</a>
       </Form>
       <CommunitiesList communities={communities} />
     </main>

@@ -1,4 +1,4 @@
-main {
+main, .comments-block {
     max-width: 800px;
     /* centering */
     margin: auto;

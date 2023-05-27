@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Card from '../../components/card';
 import ParsedDate from '../../components/date';
 import OptionalErrorMessage from '../../components/optional.error.message';
+import Rating from '../../components/rating';
 
 export default function PostView({ message, post, category, community_url, rating, votingAvailable, iVoted, isMyVotePositive }) {
     
@@ -19,7 +20,7 @@ export default function PostView({ message, post, category, community_url, ratin
             
             <div>
                 {/* todo author username */}
-                <div className="vote-block" >
+                {/*<div className="vote-block" >
                     <form className="vote-form" method="post">
                         <input type="hidden" name="is_positive" value={true} />
                         <button type="submit" disabled={!votingAvailable || (iVoted && isMyVotePositive)} className={(iVoted && isMyVotePositive) ? "button-pressed" : ""}>&uarr;</button>
@@ -29,7 +30,8 @@ export default function PostView({ message, post, category, community_url, ratin
                         <input type="hidden" name="is_positive" value={false} />
                         <button type="submit" disabled={!votingAvailable || (iVoted && !isMyVotePositive)} className={(iVoted && !isMyVotePositive) ? "button-pressed" : ""}>&darr;</button>
                     </form>
-                </div>
+                </div>*/}
+                <Rating type="post" itemId={post.id} rating={rating} votingAvailable={votingAvailable} iVoted={iVoted} isMyVotePositive={isMyVotePositive} />
                 
                 <small><ParsedDate dateString={post.created_at}/></small>
             </div>
