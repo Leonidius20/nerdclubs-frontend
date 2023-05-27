@@ -7,7 +7,8 @@ import wideCardCss from "../styles/form.wide.css";
 import postCardCss from "../styles/post.card.css";
 import { createVoteForPost, getMyVoteForPost, getVotesForPost } from "../models/post.votes.server";
 import { getToken } from "../cookies";
-import { createComment, getCommentsForPost } from "../models/comments.server";
+import { createComment, getCommentsForPost, getCommentsForPostWithUser } from "../models/comments.server";
+import { createVoteForComment } from "../models/comment.votes.server";
 import CommentsTree from "../components/comments.tree";
 
 export const handle = { hydrate: true };
@@ -38,7 +39,10 @@ export const loader = async ({ request, params }) => {
             }
         }
 
-        let comments = await getCommentsForPost(post_id);
+        
+        let comments = votingAvailable ? 
+            await getCommentsForPostWithUser(request, post_id) :
+            await getCommentsForPost(post_id);
        
         if (comments.error) {
             message = comments.message;
@@ -63,18 +67,22 @@ export const loader = async ({ request, params }) => {
 }
 
 export const action = async ({ request, params }) => {
+    console.log("action");
     const { url, category_id, post_id } = params;
 
     const formData = await request.formData();
     
     const type = formData.get("type");
+    console.log("type", type);
+    console.log("typeofstring", typeof type)
     // const itemId = formData.get("item_id");
 
     if (type === "post") {
+        
         try {
             const is_positive = formData.get("is_positive") === "true";
             const result = await createVoteForPost(request, post_id, is_positive);
-            console.log("result", result);
+            
             return json({ message: result.success ? "Vote created": "Failed to vote" });
         } catch (err) {
             console.error(err);
@@ -92,6 +100,19 @@ export const action = async ({ request, params }) => {
             console.error(err);
             return json({ error: 2, message: "Internal server error (" + err.message  + ")" }, { status: 500 });
         }
+    } else if (type === "comment-vote") {
+        console.log("comment_vote");
+        try {
+            const comment_id = formData.get("item_id");
+            const is_positive = formData.get("is_positive") === "true";
+            console.log("comment_id", comment_id);
+            console.log("is_positive", is_positive);
+            const result = await createVoteForComment(request, comment_id, is_positive);
+            return json({ message: result.success ? "Vote created": "Failed to vote" });
+        } catch (err) {
+            console.error(err);
+            return json({ error: 2, message: "Internal server error (" + err.message  + ")" }, { status: 500 });
+        }
     } else {
         return json({ error: 3, message: "Unknown action type" }, { status: 500 });
     }
@@ -103,7 +124,7 @@ export default function Post() {
     return (
         <>
             <PostView message={message} post={post} category={category} community_url={url} rating={rating} votingAvailable={votingAvailable} iVoted={iVoted} isMyVotePositive={isMyVotePositive}/>
-            <CommentsTree comments={comments} />
+            <CommentsTree comments={comments} votingAvailable={votingAvailable} />
         </>
     );
 }

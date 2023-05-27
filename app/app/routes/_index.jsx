@@ -51,7 +51,7 @@ export const action = async ({ request }) => {
 
 
 export default function Index() {
-  let { communities } = useLoaderData();
+  let { isUserLoggedIn, communities } = useLoaderData();
   const actionData = useActionData();
 
   if (actionData) {
@@ -63,7 +63,7 @@ export default function Index() {
       <Form method="post">
         <input type="search" name="query" placeholder="Search communities..." />
         <button type="submit">Search</button>
-        <a href="/create/community" className="link-button">Create new</a>
+        {isUserLoggedIn && <a href="/create/community" className="link-button">Create new</a>}
       </Form>
       <CommunitiesList communities={communities} />
     </main>

@@ -12,6 +12,18 @@ export async function getCommentsForPost(post_id) {
         }).then((res) => res.json());
 }
 
+export async function getCommentsForPostWithUser(request, post_id) {
+    return await fetch(
+        `${process.env.BACKEND_URL}/comments/${post_id}/`,
+        {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + await getToken(request),
+            },
+        }).then((res) => res.json());
+}
+
 export async function createComment(request, post_id, content, parent_comment_id) {
     const body = {
         post_id,

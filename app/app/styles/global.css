@@ -21,6 +21,11 @@ nav {
     background-color: #000000;
     height: 50px;
     display: flex;
+    justify-content: space-between;
+}
+
+nav > div {
+    display: flex;
 }
 
 nav a {
@@ -103,7 +108,6 @@ button:hover, link-button:hover {
 }
 
 .rating-highlighted {
-    color: darkblue;
     font-weight: bold;
 }
 

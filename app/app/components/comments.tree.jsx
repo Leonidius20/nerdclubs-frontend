@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import ParsedDate from "./date";
+import Rating from "./rating";
 
-export default function CommentsTree({ comments, post_id }) {
+export default function CommentsTree({ comments, post_id, votingAvailable }) {
     const [showCreateTopLevelComment, setShowCreateTopLevelComment] = useState(false);
 
 
@@ -14,14 +15,14 @@ export default function CommentsTree({ comments, post_id }) {
             {showCreateTopLevelComment && <CommentsReplyBox parent_comment_id={null} />}
             <div className="comments">
                 {comments.map((comment) => (
-                    <Comment key={comment.id} comment={comment} post_id={post_id} />
+                    <Comment key={comment} comment={comment} post_id={post_id} rating={comment.rating} iVoted={comment.i_voted} isMyVotePositive={comment.is_my_vote_positive} votingAvailable={votingAvailable} />
                 ))}
             </div>
         </div>
     );
 }
 
-function Comment({ comment, post_id, depth = 0 }) {
+function Comment({ comment, post_id, depth = 0, rating, iVoted, isMyVotePositive, votingAvailable }) {
     //const [content, setContent] = useState("");
     const [showReply, setShowReply] = useState(false);
     //const [showReplies, setShowReplies] = useState(false);
@@ -52,12 +53,13 @@ function Comment({ comment, post_id, depth = 0 }) {
     return (
         <div className="comment" style={style}>
             <div className="comment-header">
-                <div className="comment-author">&#128100; {comment.author_username}</div>
+                <div className="comment-author">&#128100; {comment.username}</div>
                 <div className="comment-date"><ParsedDate dateString={comment.created_at}/></div>
             </div>
             <div className="comment-body">
                 <div className="comment-content">{comment.content}</div>
                 <div className="comment-actions">
+                    <Rating type="comment-vote" itemId={comment.comment_id} rating={rating} votingAvailable={votingAvailable} iVoted={iVoted} isMyVotePositive={isMyVotePositive}/> 
                     <button className="comment-action" onClick={() => setShowReply(!showReply)}>
                         Reply
                     </button>
@@ -68,7 +70,7 @@ function Comment({ comment, post_id, depth = 0 }) {
                 {showReply && <CommentsReplyBox parent_comment_id={comment.comment_id} />}
                 {
                     comment.children?.map((child) => (
-                        <Comment key={child.id} comment={child} post_id={post_id} depth={depth + 1}/>
+                        <Comment key={child} comment={child} post_id={post_id} depth={depth + 1} rating={child.rating} iVoted={child.i_voted} isMyVotePositive={child.is_my_vote_positive} votingAvailable={votingAvailable}/>
                     ))
                 }
             </div>

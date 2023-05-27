@@ -44,8 +44,8 @@ export default function UserData() {
             <p>{userData?.email}</p>
             <h2>Account creation date</h2>
             <p>{userData?.created_at}</p>
-            <h2>2FA</h2>
-            <p>{userData?.twofa_confirmed ? "Enabled" : "Disabled"}</p>
+            {/*<h2>2FA</h2>
+            <p>{userData?.twofa_confirmed ? "Enabled" : "Disabled"}</p>*/}
             {userData?.privilege_level !== 1 && <h2>Privilege level</h2>}
             {userData?.privilege_level !== 1 && <p>{userData?.privilege_level}</p>}
             <a href="/" class="link-button">Back to Homepage</a>

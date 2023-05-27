@@ -18,22 +18,11 @@ export default function PostView({ message, post, category, community_url, ratin
             </article>
              
             
-            <div>
+            <div className="comment-actions" style={{marginBottom: '15px'}}>
                 {/* todo author username */}
-                {/*<div className="vote-block" >
-                    <form className="vote-form" method="post">
-                        <input type="hidden" name="is_positive" value={true} />
-                        <button type="submit" disabled={!votingAvailable || (iVoted && isMyVotePositive)} className={(iVoted && isMyVotePositive) ? "button-pressed" : ""}>&uarr;</button>
-                    </form>
-                    <span className={iVoted ? "rating-highlighted" : "rating"}>{rating}</span>
-                    <form className="vote-form" method="post">
-                        <input type="hidden" name="is_positive" value={false} />
-                        <button type="submit" disabled={!votingAvailable || (iVoted && !isMyVotePositive)} className={(iVoted && !isMyVotePositive) ? "button-pressed" : ""}>&darr;</button>
-                    </form>
-                </div>*/}
                 <Rating type="post" itemId={post.id} rating={rating} votingAvailable={votingAvailable} iVoted={iVoted} isMyVotePositive={isMyVotePositive} />
                 
-                <small><ParsedDate dateString={post.created_at}/></small>
+                <span>{post.username} <ParsedDate dateString={post.created_at}/></span>
             </div>
         </Card>
     )
