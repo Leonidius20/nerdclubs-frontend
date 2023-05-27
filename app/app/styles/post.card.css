@@ -16,6 +16,8 @@
     background-color: lightgrey;
     display: flex;
     justify-content: space-between;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 .comment-body {
