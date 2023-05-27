@@ -7,7 +7,7 @@ import wideCardCss from "../styles/form.wide.css";
 import postCardCss from "../styles/post.card.css";
 import { createVoteForPost, getMyVoteForPost, getVotesForPost } from "../models/post.votes.server";
 import { getToken } from "../cookies";
-import { getCommentsForPost } from "../models/comments.server";
+import { createComment, getCommentsForPost } from "../models/comments.server";
 import CommentsTree from "../components/comments.tree";
 
 export const handle = { hydrate: true };
@@ -66,15 +66,28 @@ export const action = async ({ request, params }) => {
     const { url, category_id, post_id } = params;
 
     const formData = await request.formData();
-    const is_positive = formData.get("is_positive") === "true";
+    
     const type = formData.get("type");
-    const itemId = formData.get("item_id");
+    // const itemId = formData.get("item_id");
 
     if (type === "post") {
         try {
+            const is_positive = formData.get("is_positive") === "true";
             const result = await createVoteForPost(request, post_id, is_positive);
             console.log("result", result);
             return json({ message: result.success ? "Vote created": "Failed to vote" });
+        } catch (err) {
+            console.error(err);
+            return json({ error: 2, message: "Internal server error (" + err.message  + ")" }, { status: 500 });
+        }
+    } else if (type === "comment") {
+        try {
+            const parent_comment_id = formData.get("parent_comment_id");
+            const content = formData.get("content");
+            
+            const result = await createComment(request, post_id, content, parent_comment_id);
+            console.log("result", result);
+            return json({ message: result?.success ? "Comment created": "Failed to comment" });
         } catch (err) {
             console.error(err);
             return json({ error: 2, message: "Internal server error (" + err.message  + ")" }, { status: 500 });

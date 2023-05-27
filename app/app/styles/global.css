@@ -58,6 +58,7 @@ input, textarea {
 
 textarea {
     resize: vertical;
+    font-family: 'Source Sans', sans-serif;
 }
 
 input:focus, textarea:focus {

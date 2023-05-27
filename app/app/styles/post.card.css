@@ -18,8 +18,28 @@
     justify-content: space-between;
 }
 
-.comment-content {
+.comment-body {
     margin-top: 10px;
     margin-bottom: 10px;
     margin-left: 10px;
+}
+
+.comment-actions {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.submit-comment-reply-form {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.comments-block h2 {
+    
+    margin-bottom: 20px;
+}
+
+.comments-block > button {
+    
 }
