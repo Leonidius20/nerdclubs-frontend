@@ -2,9 +2,11 @@ import styleCss from "~/styles/card.css";
 import { json, redirect, status } from "@remix-run/node";
 import { useActionData, useLoaderData, useFetcher } from "@remix-run/react";
 import { getSession, commitSession } from "~/cookies";
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getLoginChallenge, postLoginResult } from "../models/biometric.server";
 import { decode, encode } from "base64-arraybuffer";
+import Card from "../components/card";
+import { Bars } from "react-loader-spinner";
 
 export const handle = { hydrate: true };
 
@@ -34,12 +36,12 @@ export const action = async ({ request }) => {
 
     // tot errror hanlding
     const serverResponse = await postLoginResult(objToSend);
-    if (!serverResponse.jwtToken) {
+    if (!serverResponse.token) {
         return json({ error: "Error logging in" }); // todo display nicely
     }
 
     const session = await getSession(request.headers.get("Cookie"));
-    session.set("token", serverResponse.jwtToken);
+    session.set("token", serverResponse.token);
     const cookie = await commitSession(session);
 
     return redirect("/?index", {
@@ -52,6 +54,7 @@ export const action = async ({ request }) => {
 export default function LoginBiometricController() {
     const { options } = useLoaderData();
     const { error } = useActionData() || {};
+    const [isBiometricAuthSupported, setIsBiometricAuthSupported] = useState(true);
 
     const fetcher = useFetcher();
 
@@ -61,6 +64,11 @@ export default function LoginBiometricController() {
 
     useEffect(() => {
         if (scriptRanOnce.current) return;
+
+        if (!window.PublicKeyCredential) {
+            setIsBiometricAuthSupported(false);
+            return;
+        }
 
         (async () => {
             const decodedOptions = {
@@ -98,23 +106,22 @@ export default function LoginBiometricController() {
 
         scriptRanOnce.current = true;
 
+        return () => {
+            // cleanup, probably not needed
+        }
+
     }, [options, fetcher]);
 
     return (
-        <main>
-            <h1>Login with biometrics</h1>
-            {error &&
-            <div id="error-message-box">
-                <p role="alert">{error}</p>
-            </div>
-            }
-            
+        <Card title="Login with biometrics" message={error}>        
             <noscript>JavaScript has to be enabled in browser for this to work.</noscript>
-            {/*isBiometricAuthSupported ? <p>Biometric auth is supported. Follow directions on the screen</p> : <p>Biometric auth is not supported.</p>*/}
+            {isBiometricAuthSupported ? "Follow directions on the screen." : <p>Biometric auth is not supported.</p>}
             { /*<script type="module" src="/scripts/register.biometric.js"></script>*/}
-            <fetcher.Form reloadDocument method="post">
+            <fetcher.Form method="post" action="/">
                 <input type="hidden" name="objToSend" />
             </fetcher.Form>
-        </main>
+            <Bars height="80" width="80" color="#000000" ariaLabel="bars-loading" visible={(fetcher.state == 'idle' || fetcher.state == 'loading')}/>
+            Fetcher state: {fetcher.state}
+        </Card>
     )
 }
