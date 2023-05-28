@@ -1,84 +1,60 @@
-import stylesUrl from "~/styles/forms.css";
+import Card from "../components/card";
+
+import cardCss from "~/styles/card.css";
+import formsCss from "~/styles/forms.css";
+import postCardCss from "../styles/post.card.css";
 import { json, redirect } from "@remix-run/node";
-import { useActionData, useSearchParams } from "@remix-run/react";
-import { login } from "~/utils/auth.server";
-import jwt_decode from "jwt-decode";
-import { getSession } from "~/cookies";
-import { commitSession, isUserAuthenticated, isUserFullyAuthenticated } from "../cookies";
+import { useLoaderData } from "@remix-run/react";
+import { useEffect } from "react";
+import List from "../components/list";
+import { isUserFullyAuthenticated, isUserAuthenticated } from "../cookies";
 
-export const meta = () => {
-    return [{ title: "Log in" }];
-};
+export const links = () => [ 
+    { rel: "stylesheet", href: cardCss },
+];
 
-export const links = () => [
-    { rel: "stylesheet", href: stylesUrl },
-]
-
-export const loader = async ({ request }) => {
-    // check if the user is already logged in
+export const loader = async ({request}) => {
+    // check if already logged in
     if (await isUserAuthenticated(request)) {
-        if (await isUserFullyAuthenticated(request)) {
+        if (await isUserFullyAuthenticated(request)) { // todo remove 2fa
             return redirect("/");
         } else {
             return redirect("/login/2fa");
         }
     } else {
-        return json({});
+        return json({
+            methods: [
+                {
+                    name: "Password",
+                    url: "/login/password",
+                    available: true,
+                    comment: "Login with username and password",
+                },
+                {
+                    name: "Biometric / Hardware",
+                    url: "/login/biometric",
+                    available: false,
+                    comment: "Biometric auth",
+                },
+            ],
+        });
     }
 }
 
-export const action = async ({ request }) => {
-    const form = await request.formData();
-    const username = form.get("username");
-    const password = form.get("password");
-    const redirectTo = form.get("redirectTo");
 
-    if (!username || !password || username.length < 3) {
-        return json({ message: "Invalid username or password format" }, { status: 400 });
-    }
+export default function LoginIndex({}) {
+    const { methods } = useLoaderData();
 
-    const user = await login(username, password);
-    if (!user || !user.token) {
-        return json({ message: "Invalid username or password or Internal Server Error. Go figure. Backend says: " + user.message}, { status: 401 });
-    }
+    useEffect(() => {
+        // check if biometric auth is available
+        if (window.PublicKeyCredential) {
+            methods[1].available = true;
+        }
+    }, [methods]);
 
-    const jwtToken = user.token;
-
-    // set cookie
-    const session = await getSession(request.headers.get("Cookie"));
-    session.set("token", jwtToken);
-    const cookie = await commitSession(session);
-
-    const decodedToken = jwt_decode(jwtToken);
-
-    if (!decodedToken["twofa_passed"]) {
-        return redirect("/login/2fa" + (redirectTo ? "?redirectTo=" + redirectTo : ""), { headers: {"Set-Cookie": cookie} });
-    } else {
-        return redirect(redirectTo ? "/" + redirectTo : "/", { headers: {"Set-Cookie": cookie} });
-    }
-}
-
-export default function LoginRoute() {
-    const [searchParams] = useSearchParams();
-    const actionData = useActionData();
-    return(
-        <main>
-            <h1>Login</h1>
-            <div id="error-message-box">
-                {actionData?.message && <p role="alert">{actionData.message}</p>}
-            </div>
-            <form method="post">
-                <input type="hidden" name="redirectTo" value={searchParams.get("redirectTo")} />
-                <div>
-                    <label htmlFor="username">Username</label>
-                    <input type="text" name="username" id="username" required />
-                </div>
-                <div>
-                    <label htmlFor="password">Password</label>
-                    <input type="password" name="password" id="password" required />
-                </div>
-                <button type="submit">Login</button>
-            </form>
-        </main>
-    )
+    return (
+        <Card title="Login method" backUrl="/">
+            <List content={methods} />
+        </Card>
+    );
 }

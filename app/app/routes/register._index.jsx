@@ -19,7 +19,7 @@ export const loader = async ({ request }) => {
         if (await is2faEnabled(request)) {
             return redirect("/");
         } else {
-            return redirect("/register/2fa");
+            return redirect("/register/suggestion/biometric");
         }
     } else {
         return json({});
@@ -57,7 +57,7 @@ export const action = async ({ request }) => {
     const cookie = await commitSession(session);
 
     // redirect to 2fa page
-    return redirect("/register/2fa", { headers: {"Set-Cookie": cookie} });
+    return redirect("/register/suggestion/biometric", { headers: {"Set-Cookie": cookie} });
 }
 
 export default function Register() {

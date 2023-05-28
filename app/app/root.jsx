@@ -9,6 +9,7 @@ import {
   useMatches
 } from "@remix-run/react";
 import globalStylesUrl from "~/styles/global.css";
+
 import Navbar from "./components/navbar";
 import { isUserFullyAuthenticated } from "~/cookies";
 import { json } from "@remix-run/node";

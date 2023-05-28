@@ -12,9 +12,10 @@ main {
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.19);
 }
 
-main > h1 {
+.card-title h1 {
     text-align: center;
     margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 #error-message-box {
@@ -48,6 +49,86 @@ h2 {
     line-height: 40px;
 }
 
-.link-button:hover {
+.link-button:hover, .back-button:hover {
     box-shadow: 0 0 3pt 2pt #a9a9a9;
+}
+
+.back-button {
+    display: block;
+    border-radius: 5px;
+    background-color: #d6d6d6;
+    border: none;
+    height: 30px;
+    font-size: large;
+    /* centering */
+    position: absolute;
+    
+    
+    
+    margin-bottom: 20px;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 15px;
+    padding-right: 15px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    text-align: center;
+    line-height: 40px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    margin-top: 20px;
+    border-bottom: rgba(0, 0, 0, 0.19) solid 1px;;
+}
+
+li > a {
+    display: flex;
+    align-items: center;
+
+    margin-right: 10px;
+    background-color: rgb(248, 248, 248);
+    border-top:rgba(0, 0, 0, 0.19) solid 1px;
+    border-left: rgba(0, 0, 0, 0.19) solid 1px;
+    border-right: rgba(0, 0, 0, 0.19) solid 1px;
+
+    text-decoration: none;
+    color: black;
+
+    min-height: 45px;
+
+    font-size: large;
+
+    padding-left: 10px;
+    padding-right: 10px;
+
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    width: 100%;
+    box-sizing: border-box;
+}
+
+li > a:hover {
+    background-color: rgb(232, 232, 232);
+}
+
+li > a > div > small {
+    color: #9a9a9a;
+    display: block;
+}
+
+li > a > img {
+    height: 30px;
+    width: 30px;
+    
+    margin-right: 10px;
+}
+
+.card-action-block {
+    display: 'flex';
+    column-gap: 10px;
 }

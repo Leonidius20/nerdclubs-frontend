@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { decode, encode } from 'base64-arraybuffer';
 import { postRegistrationResult } from '../../models/biometric.server';
 import { useFetcher } from "@remix-run/react";
+import { Bars } from 'react-loader-spinner';
+import Card from '../../components/card';
 
 export default function RegisterBiometricView({ attestation, jwtToken, errrorMessage }) {
     const fetcher = useFetcher();
@@ -161,28 +163,22 @@ export default function RegisterBiometricView({ attestation, jwtToken, errrorMes
         
     }, [attestation, jwtToken, fetcher]);
 
-    
+    const finalErrorMessage = errrorMessage 
+    || (isErrorHappened ? "Error. Reload the page to try again" : null);
 
     return (
-        <main>
-            <h1>Add biometric auth</h1>
-            {errrorMessage &&
-            <div id="error-message-box">
-                <p role="alert">{errrorMessage}</p>
-            </div>
-            }
-            {isErrorHappened &&
-            <div id="error-message-box">
-                <p role="alert">Error. Reload the page to try again</p>
-            </div>
-            }
-            
-            <noscript>JavaScript has to be enabled in browser for this to work.</noscript>
+        <Card title="Biometric auth" message={finalErrorMessage}>
+             <noscript>JavaScript has to be enabled in browser for this to work.</noscript>
             {isBiometricAuthSupported ? <p>Biometric auth is supported. Follow directions on the screen</p> : <p>Biometric auth is not supported.</p>}
             { /*<script type="module" src="/scripts/register.biometric.js"></script>*/}
             <fetcher.Form method="post" action="/">
                 <input type="hidden" name="encodedCredential" />
             </fetcher.Form>
-        </main>
+
+           
+            
+            
+            <Bars height="80" width="80" color="#000000" ariaLabel="bars-loading" visible={(fetcher.state == 'idle' || fetcher.state == 'loading')}/>
+        </Card>
     )
 }
