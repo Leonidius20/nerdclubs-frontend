@@ -89,7 +89,7 @@ button, .link-button {
     display: block;
 }
 
-button:hover, link-button:hover {
+button:hover, .link-button:hover {
     box-shadow: 0 0 3pt 2pt #a9a9a9;
 }
 

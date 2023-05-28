@@ -1,5 +1,4 @@
 import { Link, Outlet, useLoaderData, useActionData } from "@remix-run/react";
-import { getUsers } from "~/models/user.server";
 import stylesUrl from "~/styles/index.css";
 import homepageCss from "~/styles/homepage.css";
 import communityCard from "~/styles/community.card.css";
@@ -22,13 +21,12 @@ export const links = () => {
 };
 
 export const loader = async ({ request }) => {
-  const users = await getUsers();
   const isUserLoggedIn = await isUserFullyAuthenticated(request);
 
   // load some communities
   const communities = await getCommunities();
 
-  return json({ users, isUserLoggedIn, communities });
+  return json({ isUserLoggedIn, communities });
 };
 
 export const action = async ({ request }) => {

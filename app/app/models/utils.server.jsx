@@ -32,16 +32,15 @@ export async function getWithAuthorization(request, url) {
 }
 
 export async function get(url) {
-    const fullUrl = `${process.env.BACKEND_URL}/${url}`;
-    const options = {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    };
-
-    return await fetch(fullUrl, options)
-        .then((res) => res.json());
+    return await fetch(
+        `${process.env.BACKEND_URL}/${url}`,
+        {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+    ).then((res) => res.json());
 }
 
 export async function post(url, jsonBody) {

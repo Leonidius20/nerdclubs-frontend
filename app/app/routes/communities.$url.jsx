@@ -50,6 +50,7 @@ export default function CommunityParent() {
                             <a href={`/communities/${community.url}/wiki/main`}>Wiki</a>
                         </div>
                         <div>
+                            <a href={`/communities/${community.url}/moderators`}>Moderators</a>
                             {
                                 community.is_owner && //todo: isMOderator
                                 <a href={`/communities/${community.url}/addcategory`}>+ New category</a>
