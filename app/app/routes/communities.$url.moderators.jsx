@@ -4,7 +4,7 @@ import OptionalErrorMessage from "../components/optional.error.message";
 import { useLoaderData } from "@remix-run/react";
 import { json, redirect } from "@remix-run/node";
 import moderatorsPageCss from "../styles/moderators.page.css";
-import { addModerator, getModeratorsByCommunityUrl, removeModerator } from "../models/moderators.server";
+import { addModerator, getModeratorsByCommunityUrl, makeOwner, removeModerator } from "../models/moderators.server";
 import { getUserInfoOrNull } from "../cookies";
 
 export function links() {
@@ -108,6 +108,24 @@ export const action = async ({ request, params }) => {
             }
 
             return redirect(`${redirectUrl}Moderator removed`);
+        } else if (action === 'promote') {
+            const userId = formData.get("moderator_id");
+
+            const community_url = params.url;
+            const community = await getCommunity(request, community_url);
+            const community_id = community.id;
+
+            const result = await makeOwner(request, community_id, userId);
+
+            if (!result) {
+                return redirect(`${redirectUrl}Error promoting moderator`);
+            }
+
+            if (result.error) {
+                return redirect(`${redirectUrl}${result.message}`);
+            }
+
+            return redirect(`${redirectUrl}Moderator promoted to owner`);
         } else {
             return redirect(`${redirectUrl}Unsupported action`);
         }

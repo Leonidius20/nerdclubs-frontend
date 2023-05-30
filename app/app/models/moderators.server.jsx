@@ -15,3 +15,8 @@ export async function removeModerator(request, community_id, user_id) {
     return await deleteWithAuthorization(request, `moderators`, 
         { community_id, user_id });
 }
+
+export async function makeOwner(request, community_id, user_id) {
+    return await postWithAuthorization(request, `moderators/make-owner`, 
+        { community_id, user_id });
+}
