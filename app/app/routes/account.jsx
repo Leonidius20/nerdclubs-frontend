@@ -1,7 +1,6 @@
 import styleCss from "~/styles/card.css";
-import { requireUserSession } from "~/cookies";
 import { getUserDataByToken } from "~/models/user.server";
-import { json, redirect } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import Card from "../components/card";
 
@@ -14,12 +13,9 @@ export const links = () => [
 ]
 
 export const loader = async ({request}) => {
-    const session = await requireUserSession(request);
-    
-    // load user data from db
     try {
-        const userData = await getUserDataByToken(session.get("token"));
-        console.log("userData: " + JSON.stringify(userData));
+        const userData = await getUserDataByToken(request);
+
         if (!userData) {
             return json( {
                     message: "Remote server error",

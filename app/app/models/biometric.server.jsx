@@ -1,5 +1,7 @@
 // this file is for getting challenges from the server
 
+import { get, post } from "./utils.server";
+
 export async function getRegistrationChallenge(token) {
     return await fetch(
         `${process.env.BACKEND_URL}/biometrics/register`,
@@ -28,24 +30,9 @@ export async function postRegistrationResult(token, attestation) {
 }
 
 export async function getLoginChallenge() {
-    return await fetch(
-        `${process.env.BACKEND_URL}/biometrics/login`,
-        {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        }).then((res) => res.json());
+    return await get(`biometrics/login`);
 }
 
 export async function postLoginResult(objToSend) {
-    return await fetch(
-        `${process.env.BACKEND_URL}/biometrics/login`,
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(objToSend),
-        }).then((res) => res.json());
+    return await post(`biometrics/login`, objToSend);
 }

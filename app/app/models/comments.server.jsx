@@ -1,27 +1,11 @@
-import { getToken } from "../cookies";
-
+import { get, getWithAuthorization, postWithAuthorization } from "./utils.server";
 
 export async function getCommentsForPost(post_id) {
-    return await fetch(
-        `${process.env.BACKEND_URL}/comments/${post_id}`,
-        {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        }).then((res) => res.json());
+    return await get(`comments/${post_id}`);
 }
 
 export async function getCommentsForPostWithUser(request, post_id) {
-    return await fetch(
-        `${process.env.BACKEND_URL}/comments/${post_id}/`,
-        {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + await getToken(request),
-            },
-        }).then((res) => res.json());
+    return await getWithAuthorization(request, `comments/${post_id}`);
 }
 
 export async function createComment(request, post_id, content, parent_comment_id) {
@@ -34,14 +18,5 @@ export async function createComment(request, post_id, content, parent_comment_id
         body.parent_comment_id = parent_comment_id;
     }
 
-    return await fetch(
-        `${process.env.BACKEND_URL}/comments/`,
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + await getToken(request),
-            },
-            body: JSON.stringify(body),
-        }).then((res) => res.json());
+    return await postWithAuthorization(request, `comments`, body);
 }

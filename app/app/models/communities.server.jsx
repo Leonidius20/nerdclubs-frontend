@@ -3,20 +3,13 @@ import { get, postWithAuthorization } from "./utils.server";
 
 // load communities from server
 export async function getCommunities(query, page) {
-    let baseUrl = `${process.env.BACKEND_URL}/communities`;
+    let baseUrl = `communities`;
     if (query || page) baseUrl += "?";
     if (query) baseUrl += `query=${query}`;
     if (query && page) baseUrl += "&";
     if (page) baseUrl += `page=${page}`;
 
-    return await fetch(
-        baseUrl,
-        {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        }).then((res) => res.json());
+    return await get(baseUrl);
 }
 
 // create a community with name, description, and url

@@ -1,15 +1,7 @@
-import { get } from "./utils.server";
+import { get, getWithAuthorization } from "./utils.server";
 
-export async function getUserDataByToken(token) {
-    return await fetch(
-        `${process.env.BACKEND_URL}/account`,
-        {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + token,
-            },
-        }).then((res) => res.json());
+export async function getUserDataByToken(request) {
+    return await getWithAuthorization(request, `account`);
 }
 
 export async function getUserById(id) {

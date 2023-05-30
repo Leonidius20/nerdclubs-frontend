@@ -73,9 +73,7 @@ export const action = async ({ request, params }) => {
     const formData = await request.formData();
     
     const type = formData.get("type");
-    console.log("type", type);
-    console.log("typeofstring", typeof type)
-    // const itemId = formData.get("item_id");
+    
 
     if (type === "post") {
         
