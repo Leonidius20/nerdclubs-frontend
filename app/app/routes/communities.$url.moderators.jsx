@@ -4,7 +4,7 @@ import OptionalErrorMessage from "../components/optional.error.message";
 import { useLoaderData } from "@remix-run/react";
 import { json, redirect } from "@remix-run/node";
 import moderatorsPageCss from "../styles/moderators.page.css";
-import { addModerator, getModeratorsByCommunityUrl } from "../models/moderators.server";
+import { addModerator, getModeratorsByCommunityUrl, removeModerator } from "../models/moderators.server";
 import { getUserInfoOrNull } from "../cookies";
 
 export function links() {
@@ -83,10 +83,31 @@ export const action = async ({ request, params }) => {
             }
 
             if (result.error) {
-                return json({ message: result.message });
+                return redirect(`${redirectUrl}${result.message}`);
             }
 
             return redirect(`${redirectUrl}Moderator added`);
+        } else if (action === 'remove') {
+            const userId = formData.get("moderator_id");
+
+            const community_url = params.url;
+            const community = await getCommunity(request, community_url);
+            const community_id = community.id;
+
+            console.log("community_id", community_id);
+            console.log("userId", userId);
+
+            const result = await removeModerator(request, community_id, userId);
+
+            if (!result) {
+                return redirect(`${redirectUrl}Error removing moderator`);
+            }
+
+            if (result.error) {
+                return redirect(`${redirectUrl}${result.message}`);
+            }
+
+            return redirect(`${redirectUrl}Moderator removed`);
         } else {
             return redirect(`${redirectUrl}Unsupported action`);
         }
@@ -145,7 +166,7 @@ function UserCard({ user, display_remove_button = false, display_make_owner_butt
                 <div style={{display: 'flex', columnGap: '10px'}}>
                     {display_remove_button &&
                         <form method="post" style={{display: 'inline-block'}}>
-                            <input type="hidden" name="moderator_id" value={user.id} />
+                            <input type="hidden" name="moderator_id" value={user.user_id} />
                             <input type="hidden" name="action" value="remove" />
                             <button type="submit">Remove</button>
                         </form>
@@ -153,7 +174,7 @@ function UserCard({ user, display_remove_button = false, display_make_owner_butt
                     {display_make_owner_button &&
 
                         <form method="post" style={{display: 'inline-block'}}>
-                            <input type="hidden" name="moderator_id" value={user.id} />
+                            <input type="hidden" name="moderator_id" value={user.user_id} />
                             <input type="hidden" name="action" value="promote" />
                             <button type="submit">Make owner</button>
                         </form>

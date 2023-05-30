@@ -1,20 +1,11 @@
 import { getToken } from "../cookies";
 
 export async function postWithAuthorization(request, url, jsonBody) {
-    const fullUrl = `${process.env.BACKEND_URL}/${url}`;
-    const options = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + await getToken(request),
-        },
-    };
-    if (jsonBody) {
-        options.body = JSON.stringify(jsonBody);
-    }
+    return await performWithAuthorization("POST", request, url, jsonBody);
+}
 
-    return await fetch(fullUrl, options)
-        .then((res) => res.json());
+export async function deleteWithAuthorization(request, url, jsonBody) {
+    return await performWithAuthorization("DELETE", request, url, jsonBody);
 }
 
 export async function getWithAuthorization(request, url) {
@@ -78,3 +69,19 @@ export async function getWithOptionalAuthorization(request, url) {
         .then((res) => res.json());
 }
 
+async function performWithAuthorization(method, request, url, jsonBody) {
+    const fullUrl = `${process.env.BACKEND_URL}/${url}`;
+    const options = {
+        method,
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + await getToken(request),
+        },
+    };
+    if (jsonBody) {
+        options.body = JSON.stringify(jsonBody);
+    }
+
+    return await fetch(fullUrl, options)
+        .then((res) => res.json());
+}
