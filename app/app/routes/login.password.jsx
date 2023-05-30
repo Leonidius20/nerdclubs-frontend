@@ -1,10 +1,12 @@
 import stylesUrl from "~/styles/forms.css";
+import cardCss from "~/styles/card.css";
 import { json, redirect } from "@remix-run/node";
 import { useActionData, useSearchParams } from "@remix-run/react";
 import { login } from "~/utils/auth.server";
 import jwt_decode from "jwt-decode";
 import { getSession } from "~/cookies";
 import { commitSession, isUserAuthenticated, isUserFullyAuthenticated } from "../cookies";
+import Card from "../components/card";
 
 export const meta = () => {
     return [{ title: "Log in" }];
@@ -12,6 +14,7 @@ export const meta = () => {
 
 export const links = () => [
     { rel: "stylesheet", href: stylesUrl },
+    { rel: "stylesheet", href: cardCss },
 ]
 
 export const loader = async ({ request }) => {
@@ -39,7 +42,7 @@ export const action = async ({ request }) => {
 
     const user = await login(username, password);
     if (!user || !user.token) {
-        return json({ message: "Invalid username or password or Internal Server Error. Go figure. Backend says: " + user.message}, { status: 401 });
+        return json({ message: user.message}, { status: 401 });
     }
 
     const jwtToken = user.token;
@@ -62,11 +65,7 @@ export default function LoginRoute() {
     const [searchParams] = useSearchParams();
     const actionData = useActionData();
     return(
-        <main>
-            <h1>Login</h1>
-            <div id="error-message-box">
-                {actionData?.message && <p role="alert">{actionData.message}</p>}
-            </div>
+        <Card title="Login" backUrl="/login" message={actionData?.message}>
             <form method="post">
                 <input type="hidden" name="redirectTo" value={searchParams.get("redirectTo")} />
                 <div>
@@ -79,6 +78,6 @@ export default function LoginRoute() {
                 </div>
                 <button type="submit">Login</button>
             </form>
-        </main>
+        </Card>
     )
 }
