@@ -1,7 +1,7 @@
 import { Editable } from "@wysimark/react";
 import Card from "~/components/card.jsx";
 
-export default function WikiPageEditorView({ message, title, onTitleChange, url, onUrlChange, editor, onFormSubmit, pageId }) {
+export default function WikiPageEditorView({ message, title, onTitleChange, url, onUrlChange, editor, onFormSubmit, pageId, isEdit = false }) {
 
     return (
         <Card title="Create wiki page" message={message}>
@@ -12,7 +12,7 @@ export default function WikiPageEditorView({ message, title, onTitleChange, url,
                 </div>
                 <div>
                     <label htmlFor="page_url">Page url</label>
-                    <input type="text" name="page_url" required value={url} onInput={e => onUrlChange(e.target.value)} />
+                    <input type="text" name="page_url" required value={url} onInput={e => onUrlChange(e.target.value)} disabled={isEdit}/>
                 </div>
                 <div>
                     <label htmlFor="content">Content</label>

@@ -96,6 +96,6 @@ export default function WikiPageEdit() {
     }
 
     return (
-        <WikiPageEditorView message={message} editor={editor} title={title} onTitleChange={setTitle} url={pageUrl} onUrlChange={setPageUrl} onFormSubmit={onFormSubmit} pageId={page.wiki_page_id} />
+        <WikiPageEditorView message={message} editor={editor} title={title} onTitleChange={setTitle} url={pageUrl} onUrlChange={setPageUrl} onFormSubmit={onFormSubmit} pageId={page.wiki_page_id} isEdit={true} />
     )
 }

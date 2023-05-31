@@ -7,6 +7,7 @@ import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import Markdown from 'markdown-to-jsx';
 import List from '../components/list';
+import { isUserAuthenticated } from '../cookies';
 
 export const links = () => [
     { rel: "stylesheet", href: wideCardCss },
@@ -14,6 +15,8 @@ export const links = () => [
 ]
 
 export const loader = async ({ request, params }) => {
+    const isUserLoggedIn = await isUserAuthenticated(request);
+
     const community_url = params.url;
     const page_url = params.page_url;
 
@@ -34,17 +37,17 @@ export const loader = async ({ request, params }) => {
         }
     }
 
-    return json({ page, community_url, page_url });
+    return json({ page, community_url, page_url, community, isUserLoggedIn });
 }
 
 export default function WikiPage() {
-    const { message, not_found, page, community_url, page_url } = useLoaderData();
+    const { message, not_found, page, community_url, page_url, community, isUserLoggedIn } = useLoaderData();
 
     if (not_found) {
         return (
             <Card title="Page not found">
                 <p>Page with such url doesn't exist in this community. </p>
-                <a href={`/communities/${community_url}/create-wiki-page?url=${page_url}`} className='link-button' style={{margin: 'auto', marginTop: '15px'}}>Create</a>
+                <a href={`/communities/${community_url}/wiki/create?url=${page_url}`} className='link-button' style={{margin: 'auto', marginTop: '15px'}}>Create</a>
             </Card>
         );
     }
@@ -60,15 +63,30 @@ export default function WikiPage() {
             <aside>
                 <h3>This page</h3>
                 <ul>
+                    {
+                        isUserLoggedIn &&
+                        <li>
+                            <a href={`/communities/${community_url}/wiki/pages/${page_url}/edit`}>Edit</a>
+                        </li>
+                    }
                     <li>
-                        <a href={`/communities/${community_url}/wiki/pages/${page_url}/edit`}>Edit</a>
+                        <a href={`/communities/${community_url}/wiki/pages/${page_url}/versions`}>Versions</a>
                     </li>
+                    {
+                        community.is_moderator &&
+                        <li>
+                            <a href={`/communities/${community_url}/wiki/pages/${page_url}/delete`}>Delete</a>
+                        </li>
+                    }
                 </ul>
                 <h3>Other pages</h3>
                 <ul>
-                    <li>
-                        <a href={`/communities/${community_url}/wiki/create`}>Create new</a>
-                    </li>
+                    {
+                        isUserLoggedIn &&
+                        <li>
+                            <a href={`/communities/${community_url}/wiki/create`}>Create new</a>
+                        </li>
+                    }
                     <li>
                         <a href={`/communities/${community_url}/wiki/all`}>List all pages</a>
                     </li>
