@@ -1,8 +1,8 @@
 import PostView from "../views/community/post.view";
-import { useLoaderData } from "@remix-run/react";
-import { getPost } from "../models/posts.server";
+import { useLoaderData, useRouteLoaderData } from "@remix-run/react";
+import { getPost, getPostWithAuth, deletePost } from "../models/posts.server";
 import { getCategory } from "../models/categories.server";
-import { json } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import wideCardCss from "../styles/form.wide.css";
 import postCardCss from "../styles/post.card.css";
 import { createVoteForPost, getMyVoteForPost, getVotesForPost } from "../models/post.votes.server";
@@ -22,9 +22,11 @@ export const loader = async ({ request, params }) => {
     const { url, category_id, post_id } = params;
 
     try {
-        let message = null;
+        // get message from url params
+        const url = new URL(request.url);
+        let message = url.searchParams.get("message");
 
-        const post = await getPost(post_id);
+        const post = await getPostWithAuth(request, post_id);
         const category = await getCategory(category_id);
         const { rating } = await getVotesForPost(post_id);
 
@@ -111,6 +113,13 @@ export const action = async ({ request, params }) => {
             console.error(err);
             return json({ error: 2, message: "Internal server error (" + err.message  + ")" }, { status: 500 });
         }
+    } else if (type === "delete-post") {
+        try {
+            const result = await deletePost(request, post_id);
+            return redirect(`/communities/${url}/categories/${category_id}/?message=${result.message}`);
+        } catch (err) {
+            return redirect(`?message=${err.message}`);
+        }
     } else {
         return json({ error: 3, message: "Unknown action type" }, { status: 500 });
     }
@@ -119,9 +128,13 @@ export const action = async ({ request, params }) => {
 export default function Post() {
     const { message, post, category, url, rating, votingAvailable, iVoted, isMyVotePositive, comments } = useLoaderData();
 
+    // get community info from loader data
+    const { community } = useRouteLoaderData('routes/communities.$url');
+    const { is_owner, is_moderator } = community;
+
     return (
         <>
-            <PostView message={message} post={post} category={category} community_url={url} rating={rating} votingAvailable={votingAvailable} iVoted={iVoted} isMyVotePositive={isMyVotePositive}/>
+            <PostView message={message} post={post} category={category} community_url={url} rating={rating} votingAvailable={votingAvailable} iVoted={iVoted} isMyVotePositive={isMyVotePositive} isOwner={is_owner} isModerator={is_moderator}/>
             <CommentsTree comments={comments} votingAvailable={votingAvailable} />
         </>
     );
