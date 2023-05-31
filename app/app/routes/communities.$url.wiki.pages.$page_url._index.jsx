@@ -61,16 +61,16 @@ export default function WikiPage() {
                 <h3>This page</h3>
                 <ul>
                     <li>
-                        <a href={`${page_url}/edit`}>Edit</a>
+                        <a href={`/communities/${community_url}/wiki/pages/${page_url}/edit`}>Edit</a>
                     </li>
                 </ul>
                 <h3>Other pages</h3>
                 <ul>
                     <li>
-                        <a href={`../create-wiki-page`}>Create new</a>
+                        <a href={`/communities/${community_url}/wiki/create`}>Create new</a>
                     </li>
                     <li>
-                        <a href={`../all-wiki-pages`}>List all pages</a>
+                        <a href={`/communities/${community_url}/wiki/all`}>List all pages</a>
                     </li>
                 </ul>
             </aside>

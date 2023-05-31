@@ -47,7 +47,7 @@ export default function CommunityParent() {
                     <div className="community-nav">
                         <div>
                             <a href={`/communities/${community.url}`}>Posts</a>
-                            <a href={`/communities/${community.url}/wiki/main`}>Wiki</a>
+                            <a href={`/communities/${community.url}/wiki/pages/main`}>Wiki</a>
                         </div>
                         <div>
                             <a href={`/communities/${community.url}/moderators`}>Moderators</a>

@@ -20,3 +20,7 @@ export async function updateWikiPage(request, wiki_page_id, title, content) {
         content,
     });
 }
+
+export async function getAllWikiPagesInCommunity(community_id) {
+    return await get(`wiki-pages/all?community_id=${community_id}`);
+}

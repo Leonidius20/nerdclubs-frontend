@@ -67,7 +67,7 @@ export const action = async ({ request, params }) => {
         return redirect(`?message=${result ? result.message : "Unknown error"}`);
     }
 
-    return redirect(`/communities/${params.url}/wiki/${page_url}`);
+    return redirect(`../`);
 }
 
 export default function WikiPageEdit() {

@@ -47,7 +47,7 @@ export const action = async ({ request, params }) => {
     }
     
 
-    return redirect(`/communities/${community_url}/wiki/${page_url}`);
+    return redirect(`/communities/${community_url}/wiki/pages/${page_url}`);
 }
 
 export default function CreateWikiPage() {
