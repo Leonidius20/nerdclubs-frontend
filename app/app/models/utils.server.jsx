@@ -8,6 +8,10 @@ export async function deleteWithAuthorization(request, url, jsonBody) {
     return await performWithAuthorization("DELETE", request, url, jsonBody);
 }
 
+export async function putWithAuthorization(request, url, jsonBody) {
+    return await performWithAuthorization("PUT", request, url, jsonBody);
+}
+
 export async function getWithAuthorization(request, url) {
     const fullUrl = `${process.env.BACKEND_URL}/${url}`;
     const options = {

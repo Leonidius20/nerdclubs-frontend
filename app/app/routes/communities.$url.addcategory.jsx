@@ -1,6 +1,6 @@
 import AddCategoryView from "../views/community/add.category.view";
 import formCss from "~/styles/forms.css";
-import { useActionData } from "@remix-run/react";  
+import { useActionData, useMatches } from "@remix-run/react";  
 import { createCategory } from "../models/categories.server";
 import { getCommunity } from "../models/communities.server";
 import { redirect } from "@remix-run/node";
@@ -23,7 +23,6 @@ export const action = async ({ request, params }) => {
     const description = form.get("description");
 
     
-
     // submit to server
     try {
         // get community id from serve
