@@ -1,7 +1,7 @@
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { getCommunity } from "../models/communities.server";
-
+import categoryPageCss from "~/styles/category.page.css";
 import stylesUrl from "~/styles/community.page.css";
 import communityCardCss from "~/styles/community.card.css";
 import { getUserInfoOrNull } from "../cookies";
@@ -17,6 +17,7 @@ export const meta = ({ data }) => {
 export const links = () => [
     { rel: "stylesheet", href: stylesUrl },
     { rel: "stylesheet", href: communityCardCss },
+    { rel: "stylesheet", href: categoryPageCss },
 ];
 
 export async function loader({ request, params }) {

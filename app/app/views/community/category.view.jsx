@@ -2,7 +2,7 @@ import OptionalErrorMessage from "../../components/optional.error.message";
 import ParsedDate from "../../components/date";
 import markdownToTxt from 'markdown-to-txt';
 
-export default function CategoryView({ message, communityUrl, category, posts }) {
+export default function CategoryView({ message, communityUrl, category, posts, isUserLoggedIn }) {
     return (
         <main>
             <OptionalErrorMessage message={message} />
@@ -11,9 +11,12 @@ export default function CategoryView({ message, communityUrl, category, posts })
                     <h2>{category.name}</h2>
                     <p>{category.description}</p>
                 </div>
-                <div>
-                    <a href={`/communities/${communityUrl}/categories/${category.id}/addpost`}  className="link-button">+ Add post</a>
-                </div>
+                {
+                    isUserLoggedIn &&
+                    <div>
+                        <a href={`/communities/${communityUrl}/categories/${category.id}/addpost`}  className="link-button">+ Add post</a>
+                    </div>
+                }
             </div>
             
             

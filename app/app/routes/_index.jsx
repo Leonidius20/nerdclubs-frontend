@@ -8,6 +8,8 @@ import { Form } from "@remix-run/react";
 import CommunitiesList from "../components/communities.list";
 import { getCommunities } from "../models/communities.server";
 
+export const handle = { hydrate: true };
+
 export const meta = () => {
   return [{ title: "Homepage" }];
 };

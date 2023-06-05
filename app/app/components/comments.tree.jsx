@@ -9,9 +9,14 @@ export default function CommentsTree({ comments, post_id, votingAvailable }) {
     return (
         <div className="comments-block">
             <h2>Comments</h2>
-            <button onClick={() => setShowCreateTopLevelComment(!showCreateTopLevelComment)}>
+            {
+                votingAvailable ?
+                <button onClick={() => setShowCreateTopLevelComment(!showCreateTopLevelComment)}>
                     + Add a comment
-            </button>
+                </button> :
+                <p>Log in to add a comment or rate other comments.</p>
+            }
+            
             {showCreateTopLevelComment && <CommentsReplyBox parent_comment_id={null} />}
             <div className="comments">
                 {comments.map((comment) => (
@@ -60,9 +65,12 @@ function Comment({ comment, post_id, depth = 0, rating, iVoted, isMyVotePositive
                 <div className="comment-content">{comment.content}</div>
                 <div className="comment-actions">
                     <Rating type="comment-vote" itemId={comment.comment_id} rating={rating} votingAvailable={votingAvailable} iVoted={iVoted} isMyVotePositive={isMyVotePositive}/> 
-                    <button className="comment-action" onClick={() => setShowReply(!showReply)}>
-                        Reply
-                    </button>
+                    {
+                        votingAvailable &&
+                        <button className="comment-action" onClick={() => setShowReply(!showReply)}>
+                            Reply
+                        </button>
+                    }
                     {/*<div className="comment-action" onClick={() => setShowReplies(!showReplies)}>
                         {showReplies ? "Hide Replies" : "Show Replies"}
                     </div>*/}
@@ -89,13 +97,14 @@ function Comment({ comment, post_id, depth = 0, rating, iVoted, isMyVotePositive
 function CommentsReplyBox({ parent_comment_id }) {
     return (
         <form method="post" className="submit-comment-reply-form">
-            <input type="hidden" name="type" value="comment" />
+            <input type="hidden" name="type" value="comment"/>
             <input type="hidden" name="parent_comment_id" value={parent_comment_id} />
             
             <textarea
                 className="comment-reply-input"
                 placeholder="Write a reply..."
                 name="content"
+                required
                 /*value={content}
                 onChange={(e) => setContent(e.target.value)}*/
             />

@@ -6,6 +6,8 @@ import { register } from "~/utils/auth.server";
 import { getSession, commitSession } from "~/cookies";
 import RegisterView from "../views/register";
 
+export const handle = { hydrate: true };
+
 export const meta = () => {
     return [{ title: "Register" }];
 };
@@ -33,8 +35,24 @@ export const action = async ({ request }) => {
     const password = form.get("password");
     const password2 = form.get("password2");
 
-    if (!username || !email || !password || !password2 || username.length < 3 || password.length < 8 || username.length > 20 || password.length > 20) {
-        return json({ message: "Invalid input format" }, { status: 400 });
+    if (!username || !email || !password || !password2) {
+        return json({ message: "All required fields should be filled out" }, { status: 400 });
+    }
+
+    if ( username.length < 3 || username.length > 20) {
+        return json({ message: "Username should be between 3 and 20 characters" }, { status: 400 });
+    }
+
+    if (!/^[A-Za-z0-9_\-]*$/.test(username)) { 
+        return json({ message: "Username can only contain only English letters, numbers, underscores and hyphens" }, { status: 400 });
+    }
+
+    if (password.length < 8 || password.length > 20) {
+        return json({ message: "Password should be between 8 and 20 characters" }, { status: 400 });
+    }
+
+    if (!/^[A-Za-z0-9$.@,#_\-]*$/.test(password)) { 
+        return json({ message: "Password can only contain only English letters, numbers and the following symbols: $.@,#_-" }, { status: 400 });
     }
 
     if (password !== password2) {
@@ -45,9 +63,13 @@ export const action = async ({ request }) => {
         return json({ message: "Invalid email" }, { status: 400 });
     }
 
+    
+
+
+
     const registrationResult = await register(username, password, email);
     if (!registrationResult || !registrationResult.token) {
-        return json({ message: "Internal Server Error. Backend says: " + registrationResult.message}, { status: 500 });
+        return json({ message: registrationResult.message}, { status: 500 });
     }
 
     // save token in cookie

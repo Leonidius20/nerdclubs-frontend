@@ -4,7 +4,7 @@ import Card from "~/components/card.jsx";
 export default function WikiPageEditorView({ message, title, onTitleChange, url, onUrlChange, editor, onFormSubmit, pageId, isEdit = false }) {
 
     return (
-        <Card title="Create wiki page" message={message}>
+        <Card title="Edit wiki page" message={message}>
             <form method="POST" id="create-wiki-page-form" onSubmit={onFormSubmit}>
                 <div>
                     <label htmlFor="title">Title</label>

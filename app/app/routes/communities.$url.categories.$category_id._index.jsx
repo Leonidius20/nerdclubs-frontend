@@ -5,6 +5,7 @@ import { json } from "@remix-run/node";
 import { getPostsInCategory } from "../models/posts.server";
 import communityCardCss from "~/styles/community.card.css";
 import categoryPageCss from "~/styles/category.page.css";
+import { isUserAuthenticated } from "../cookies";
 
 export const links = () => [
     { rel: "stylesheet", href: communityCardCss },
@@ -15,6 +16,7 @@ export const loader = async ({ request, params }) => {
     const communityUrl = params.url;
     const categoryId = params.category_id;
 
+    const isUserLoggedIn = await isUserAuthenticated(request);
     
     try {
         // get category from server
@@ -25,7 +27,8 @@ export const loader = async ({ request, params }) => {
 
         return json({
             communityUrl,
-            category, posts
+            category, posts,
+            isUserLoggedIn,
         });
     } catch (error) {
         return json({ message: error.message });
@@ -34,6 +37,6 @@ export const loader = async ({ request, params }) => {
 }
 
 export default function Category() {
-    const { message, communityUrl, category, posts } = useLoaderData(); 
-    return <CategoryView message={message} communityUrl={communityUrl} category={category} posts={posts} />
+    const { message, communityUrl, category, posts, isUserLoggedIn } = useLoaderData(); 
+    return <CategoryView message={message} communityUrl={communityUrl} category={category} posts={posts} isUserLoggedIn={isUserLoggedIn} />
 }

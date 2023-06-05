@@ -1,6 +1,6 @@
 import { useState } from "react";
 import OptionalErrorMessage from "../../components/optional.error.message";
-import { useFetcher } from "@remix-run/react";
+import { Form, useFetcher } from "@remix-run/react";
 import { Editable, useEditor } from "@wysimark/react"
 import Card from "../../components/card";
 
@@ -36,7 +36,7 @@ export default function AddPostView({ message, communityUrl, categoryId, categor
 
     return (
         <Card title="Add Post" backUrl={`../${categoryId}`} message={message}>
-            <form method="POST" onSubmit={onSubmitButton}>
+            <Form method="POST" onSubmit={onSubmitButton}>
                 <div>
                     <label htmlFor="title">Title</label>
                     <input type="text" id="title" name="title" value={title} onInput={e => setTitle(e.target.value)}  required />
@@ -47,7 +47,7 @@ export default function AddPostView({ message, communityUrl, categoryId, categor
                     <Editable editor={editor}/>
                 </div>
                 <button type="submit">Add Post</button>
-            </form>
+            </Form>
         </Card>
     );
 }

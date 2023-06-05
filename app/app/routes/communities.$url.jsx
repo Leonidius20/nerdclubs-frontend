@@ -51,10 +51,7 @@ export default function CommunityParent() {
                         </div>
                         <div>
                             <a href={`/communities/${community.url}/moderators`}>Moderators</a>
-                            {
-                                community.is_moderator && 
-                                <a href={`/communities/${community.url}/addcategory`}>+ New category</a>
-                            }
+                           
                         </div>
                     </div>
                     <Outlet />

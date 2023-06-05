@@ -17,6 +17,15 @@ export const action = async ({ request }) => {
     const form = await request.formData();
     const name = form.get("name");
     const url = form.get("url");
+
+    if (!name || !url) {
+        return json({ message: "Invalid input format" }, { status: 400 });
+    }
+
+    if (!/^[A-Za-z0-9]*$/.test(url)) { // there are non-english or special chars in url
+        return json({ message: "URL should contain only English letters and numbers" }, { status: 400 });
+    }
+
     const description = form.get("description");
 
     try {

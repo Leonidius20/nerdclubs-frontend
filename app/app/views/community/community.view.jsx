@@ -8,7 +8,18 @@ export default function CommunityView({ message, community, categories }) {
 
     return ( 
         <main>
-            <h2>Post categories</h2>
+            
+            <div className="category-header">
+                <div>
+                    <h2>Post categories</h2>
+                </div>
+                {
+                    community.is_moderator &&
+                    <div>
+                        <a href={`/communities/${community.url}/addcategory`}  className="link-button">+ Add category</a>
+                    </div>
+                }
+            </div>
             {categories.map(category => (
                 <div class="category community-card" key={category}>
                     <a href={`/communities/${community.url}/categories/${category.id}`}>

@@ -3,6 +3,7 @@ import { getUserDataByToken } from "~/models/user.server";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import Card from "../components/card";
+import RarsedDate from "../components/date";
 
 export const meta = () => {
     return [{ title: "User Data" }];
@@ -40,7 +41,7 @@ export default function UserData() {
             <h2>Email</h2>
             <p>{userData?.email}</p>
             <h2>Account creation date</h2>
-            <p>{userData?.created_at}</p>
+            <p><RarsedDate dateString={userData?.created_at}/></p>
             
             {userData?.privilege_level !== 1 && <h2>Privilege level</h2>}
             {userData?.privilege_level !== 1 && <p>{userData?.privilege_level}</p>}

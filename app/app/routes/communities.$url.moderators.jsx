@@ -163,7 +163,7 @@ export default function CommunityModeratorsPage({}) {
                     <h3>Add</h3>
                     <form method="post" style={{display: 'flex', columnGap: '10px', marginTop: "10px"}}>
                         <input type="hidden" name="action" value="add" />
-                        <input type="text" name="username" placeholder="Username" />
+                        <input type="text" name="username" placeholder="Username" required />
                         <button type="submit">Add</button>
                     </form>
                     </>
