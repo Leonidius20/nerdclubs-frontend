@@ -3,6 +3,7 @@ import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { getCommunity } from "../models/communities.server";
 import communityCardCss from "~/styles/community.page.css";
+import { getUserInfoOrNull } from "../cookies";
 
 export const links = () => [
     { rel: "stylesheet", href: communityCardCss },
@@ -14,6 +15,9 @@ export async function loader({ request, params }) {
         if (community.error) return json({ message: community.message });
         const id = community.id;
         //const categories = await getCategories(id);
+
+        // get user
+        const thisUser = await getUserInfoOrNull(request);
 
         return json({ community, /*categories*/ });
     } catch (err) {
