@@ -1,4 +1,11 @@
-import formCss from "~/styles/form.wide.css";
+//import formCss from "~/styles/form.wide.css";
+
+
+import cardCss from "~/styles/card.base.css";
+import cardWide from "~/styles/card.wide.css";
+import formCss from "~/styles/forms.css";
+
+
 import { getCommunity } from "../models/communities.server";
 import { createPost } from "../models/posts.server";
 import AddPostView from "../views/community/add.post.view";
@@ -14,7 +21,10 @@ export const meta = () => {
 }
 
 export const links = () => [
-    { rel: "stylesheet", href: formCss },
+   // { rel: "stylesheet", href: formCss },
+    { rel: "stylesheet", href: cardCss },
+    { rel: "stylesheet", href: cardWide },
+    { rel: "stylesheet", href: formCss }
 ];
 
 export const loader = async ({ params }) => {

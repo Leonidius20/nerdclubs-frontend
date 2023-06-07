@@ -10,8 +10,7 @@ export default function PostView({ message, post, category, community_url, ratin
     
 
     return (
-        <Card title={post.title} backUrl={`../`}>
-            <OptionalErrorMessage message={message} />
+        <Card title={post.title} backUrl={`../`} message={message}>
         
             <article className='content'>
                 <Markdown>{post.content}</Markdown>

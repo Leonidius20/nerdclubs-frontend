@@ -1,0 +1,11 @@
+#error-message-box {
+    background-color: rgb(255, 133, 3);
+    text-align: center;
+    border-radius: 5px;
+    padding: 1em;
+    margin-top: 10px;
+}
+
+#error-message-box:empty {
+    display: none;
+}

@@ -21,7 +21,7 @@ export default function CommunityView({ message, community, categories }) {
                 }
             </div>
             {categories.map(category => (
-                <div class="category community-card" key={category}>
+                <div className="category community-card" key={category}>
                     <a href={`/communities/${community.url}/categories/${category.id}`}>
                         <h3>{category.name}</h3>
                     </a>

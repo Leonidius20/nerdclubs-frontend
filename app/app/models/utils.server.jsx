@@ -1,15 +1,15 @@
 import { getToken } from "../cookies";
 
 export async function postWithAuthorization(request, url, jsonBody) {
-    return await performWithAuthorization("POST", request, url, jsonBody);
+    return performWithAuthorization("POST", request, url, jsonBody);
 }
 
 export async function deleteWithAuthorization(request, url, jsonBody) {
-    return await performWithAuthorization("DELETE", request, url, jsonBody);
+    return performWithAuthorization("DELETE", request, url, jsonBody);
 }
 
 export async function putWithAuthorization(request, url, jsonBody) {
-    return await performWithAuthorization("PUT", request, url, jsonBody);
+    return performWithAuthorization("PUT", request, url, jsonBody);
 }
 
 export async function getWithAuthorization(request, url) {
@@ -22,12 +22,12 @@ export async function getWithAuthorization(request, url) {
         },
     };
 
-    return await fetch(fullUrl, options)
+    return fetch(fullUrl, options)
         .then((res) => res.json());
 }
 
 export async function get(url) {
-    return await fetch(
+    return fetch(
         `${process.env.BACKEND_URL}/${url}`,
         {
             method: "GET",
@@ -50,7 +50,7 @@ export async function post(url, jsonBody) {
         options.body = JSON.stringify(jsonBody);
     }
 
-    return await fetch(fullUrl, options)
+    return fetch(fullUrl, options)
         .then((res) => res.json());
 }
 
@@ -69,7 +69,7 @@ export async function getWithOptionalAuthorization(request, url) {
         headers,
     };
 
-    return await fetch(fullUrl, options)
+    return fetch(fullUrl, options)
         .then((res) => res.json());
 }
 
@@ -86,6 +86,6 @@ async function performWithAuthorization(method, request, url, jsonBody) {
         options.body = JSON.stringify(jsonBody);
     }
 
-    return await fetch(fullUrl, options)
+    return fetch(fullUrl, options)
         .then((res) => res.json());
 }

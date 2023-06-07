@@ -1,17 +1,22 @@
+import { Form } from "@remix-run/react";
+import Card from "../../components/card";
 import OptionalErrorMessage from "../../components/optional.error.message";
 
 export default function AddCategoryView({ message }) {
     return (
-        <main>
-            <h1>Add category</h1>
-            <OptionalErrorMessage message={message} />
-            <form method="post">
-                <label htmlFor="name">Name</label>
-                <input type="text" name="name" id="name" required />
-                <label htmlFor="description">Description</label>
-                <input type="text" name="description" id="description" />
-                <button type="submit">Add category</button>
-            </form>
-        </main>
+        <Card title="Add category" backUrl="./" message={message}>
+            <Form method="post">
+                <div>
+                    <label htmlFor="name">Name</label>
+                    <input type="text" name="name" id="name" required />
+                </div>
+                <div>
+                    <label htmlFor="description">Description</label>
+                    <input type="text" name="description" id="description" />
+                </div>
+                
+                <button type="submit" className="main-action-button">Add category</button>
+            </Form>
+        </Card>
     );
 }

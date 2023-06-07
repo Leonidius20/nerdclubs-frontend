@@ -1,3 +1,5 @@
+import "../styles/error.box.css";
+
 export default function OptionalErrorMessage({ message }) {
     return (
         <>

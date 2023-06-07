@@ -1,6 +1,7 @@
 import Card from "../components/card";
 
-import cardCss from "~/styles/card.css";
+import cardCss from "~/styles/card.base.css";
+import cardNarrow from "~/styles/card.narrow.css";
 import formsCss from "~/styles/forms.css";
 import postCardCss from "../styles/post.card.css";
 import { json, redirect } from "@remix-run/node";
@@ -11,6 +12,7 @@ import { isUserFullyAuthenticated, isUserAuthenticated } from "../cookies";
 
 export const links = () => [ 
     { rel: "stylesheet", href: cardCss },
+    { rel: "stylesheet", href: cardNarrow },
 ];
 
 export const loader = async ({request}) => {

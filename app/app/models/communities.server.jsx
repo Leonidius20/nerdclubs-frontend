@@ -9,12 +9,12 @@ export async function getCommunities(query, page) {
     if (query && page) baseUrl += "&";
     if (page) baseUrl += `page=${page}`;
 
-    return await get(baseUrl);
+    return get(baseUrl);
 }
 
 // create a community with name, description, and url
 export async function createCommunity(request, name, description, url) {
-    return await postWithAuthorization(request, "communities", {
+    return postWithAuthorization(request, "communities", {
         name,
         description,
         url,
@@ -22,9 +22,9 @@ export async function createCommunity(request, name, description, url) {
 }
 
 export async function searchCommunities(query) {
-    return await get(`communities/?query=${query}`);
+    return get(`communities/?query=${query}`);
 }
 
 export async function getCommunity(request, url) {
-    return await getWithOptionalAuthorization(request, `communities/${url}`);
+    return getWithOptionalAuthorization(request, `communities/${url}`);
 }

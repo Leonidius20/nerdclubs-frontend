@@ -1,13 +1,25 @@
-import { get, getWithAuthorization } from "./utils.server";
+import { get, getWithAuthorization, putWithAuthorization } from "./utils.server";
 
 export async function getUserDataByToken(request) {
-    return await getWithAuthorization(request, `account`);
+    return getWithAuthorization(request, `account`);
 }
 
 export async function getUserById(id) {
-    return await get(`users/${id}`);
+    return get(`users/${id}`);
 }
 
 export async function getUserByUsername(username) {
-    return await get(`users?username=${username}`);
+    return get(`users?username=${username}`);
+}
+
+export async function getAllBannedUsers(request) {
+    return getWithAuthorization(request, `users/banned`);
+}
+
+export async function banUser(request, userId) {
+    return putWithAuthorization(request, `users/${userId}/ban`);
+}
+
+export async function unbanUser(request, userId) {
+    return putWithAuthorization(request, `users/${userId}/unban`);
 }

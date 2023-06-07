@@ -5,12 +5,17 @@ import { json, redirect } from "@remix-run/node";
 import { getCommunity } from "../models/communities.server";
 import { getWikiPageByUrl, updateWikiPage } from "../models/wiki.pages.server";
 import { useState } from "react";
-import wideCardCss from "~/styles/form.wide.css";
+//import wideCardCss from "~/styles/form.wide.css";
+import cardCss from "~/styles/card.base.css";
+import wideCardCss from "~/styles/card.wide.css";
+import formCss from "~/styles/forms.css";
 
 export const handle = { hydrate: true };
 
 export const links = () => [
+    { rel: "stylesheet", href: cardCss },
     { rel: "stylesheet", href: wideCardCss },
+    { rel: "stylesheet", href: formCss }
 ];
 
 export const loader = async ({ request, params }) => {

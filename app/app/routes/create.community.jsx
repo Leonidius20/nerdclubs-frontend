@@ -1,8 +1,11 @@
 import stylesUrl from "~/styles/forms.css";
+import cardCss from "~/styles/card.base.css";
+import cardNarrow from "~/styles/card.narrow.css";
 import { getToken } from "../cookies";
 import { createCommunity } from "../models/communities.server";
 import { json, redirect } from "@remix-run/node";
-import { useActionData } from "@remix-run/react";
+import { Form, useActionData } from "@remix-run/react";
+import Card from "../components/card";
 
 
 export const meta = () => {
@@ -11,6 +14,8 @@ export const meta = () => {
 
 export const links = () => [
     { rel: "stylesheet", href: stylesUrl },
+    { rel: "stylesheet", href: cardCss },
+    { rel: "stylesheet", href: cardNarrow },
 ]
 
 export const action = async ({ request }) => {
@@ -44,15 +49,8 @@ export default function createCommunityController() {
     const actionData = useActionData();
 
     return (
-        <main>
-            <h1>Create community</h1>
-            {
-                actionData?.message && 
-                <div id="error-message-box">
-                    <p role="alert">{actionData.message}</p>
-                </div>
-            }
-            <form method="post">
+        <Card title="Create community" message={actionData?.message} backUrl="/">
+            <Form method="post">
                 <div>
                     <label htmlFor="name">Name</label>
                     <input type="text" name="name" id="name" required />
@@ -67,8 +65,8 @@ export default function createCommunityController() {
                     <textarea name="description" id="description" />
                     <small>Optional</small>
                 </div>
-                <button type="submit">Create</button>
-            </form>
-        </main>
+                <button type="submit" className="main-action-button">Create</button>
+            </Form>
+        </Card>
     )
 }

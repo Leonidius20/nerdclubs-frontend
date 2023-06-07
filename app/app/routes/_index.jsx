@@ -2,11 +2,12 @@ import { Link, Outlet, useLoaderData, useActionData } from "@remix-run/react";
 import stylesUrl from "~/styles/index.css";
 import homepageCss from "~/styles/homepage.css";
 import communityCard from "~/styles/community.card.css";
-import { isUserFullyAuthenticated } from "../cookies";
+import { getUserInfoOrNull, isUserFullyAuthenticated } from "../cookies";
 import { json } from "@remix-run/node";
 import { Form } from "@remix-run/react";
 import CommunitiesList from "../components/communities.list";
 import { getCommunities } from "../models/communities.server";
+import { getUserDataByToken } from "../models/user.server";
 
 export const handle = { hydrate: true };
 
@@ -28,7 +29,10 @@ export const loader = async ({ request }) => {
   // load some communities
   const communities = await getCommunities();
 
-  return json({ isUserLoggedIn, communities });
+  const user = await getUserDataByToken(request);
+  const isAdmin = user?.privilege_level === 2;
+
+  return json({ isUserLoggedIn, communities, isAdmin });
 };
 
 export const action = async ({ request }) => {
@@ -51,7 +55,7 @@ export const action = async ({ request }) => {
 
 
 export default function Index() {
-  let { isUserLoggedIn, communities } = useLoaderData();
+  let { isUserLoggedIn, communities, isAdmin } = useLoaderData();
   const actionData = useActionData();
 
   if (actionData) {
@@ -66,6 +70,14 @@ export default function Index() {
         {isUserLoggedIn && <a href="/create/community" className="link-button">Create new</a>}
       </Form>
       <CommunitiesList communities={communities} />
+      {
+        isAdmin && (
+          <footer>
+            <h2>Admin</h2>
+            <Link to="/admin/banned">Banned users</Link>
+          </footer>
+        )
+      }
     </main>
   );
 }

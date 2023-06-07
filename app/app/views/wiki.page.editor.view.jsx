@@ -20,7 +20,7 @@ export default function WikiPageEditorView({ message, title, onTitleChange, url,
                     <Editable editor={editor}/>
                 </div>
                 {pageId ? <input type="hidden" name="page_id" value={pageId} /> : ""}
-                <button type="submit">Save</button>
+                <button type="submit" className="main-action-button">Save</button>
             </form>
         </Card>
     );

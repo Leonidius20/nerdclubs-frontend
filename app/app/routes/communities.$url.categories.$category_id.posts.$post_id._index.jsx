@@ -3,7 +3,11 @@ import { useLoaderData, useRouteLoaderData } from "@remix-run/react";
 import { getPost, getPostWithAuth, deletePost } from "../models/posts.server";
 import { getCategory } from "../models/categories.server";
 import { json, redirect } from "@remix-run/node";
-import wideCardCss from "../styles/form.wide.css";
+
+
+import cardCss from "../styles/card.base.css";
+import cardWideCss from "../styles/card.wide.css";
+
 import postCardCss from "../styles/post.card.css";
 import { createVoteForPost, getMyVoteForPost, getVotesForPost } from "../models/post.votes.server";
 import { getToken } from "../cookies";
@@ -14,7 +18,8 @@ import CommentsTree from "../components/comments.tree";
 export const handle = { hydrate: true };
 
 export const links = () => [
-    { rel: "stylesheet", href: wideCardCss },
+    { rel: "stylesheet", href: cardCss },
+    { rel: "stylesheet", href: cardWideCss },
     { rel: "stylesheet", href: postCardCss },
 ]
 

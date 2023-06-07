@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ClientOnly } from 'remix-utils'; 
-import styleCss from "~/styles/card.css";
+import styleCss from "~/styles/card.base.css";
+import cardNarrow from "~/styles/card.narrow.css";
 import RegisterBiometricView from '../views/register/biometric.view';
 import { getRegistrationChallenge } from "~/models/biometric.server";
 import { useLoaderData } from "@remix-run/react";
@@ -18,6 +19,7 @@ export const meta = () => {
 
 export const links = () => [
     { rel: "stylesheet", href: styleCss },
+    { rel: "stylesheet", href: cardNarrow },
 ]
 
 export const loader = async ({ request }) => {

@@ -1,7 +1,7 @@
 import { getCommunity } from "../models/communities.server";
 import { getUserById, getUserByUsername } from "../models/user.server";
 import OptionalErrorMessage from "../components/optional.error.message";
-import { useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
 import { json, redirect } from "@remix-run/node";
 import moderatorsPageCss from "../styles/moderators.page.css";
 import { addModerator, getModeratorsByCommunityUrl, makeOwner, removeModerator } from "../models/moderators.server";
@@ -161,7 +161,7 @@ export default function CommunityModeratorsPage({}) {
                 {is_owner &&
                     <>
                     <h3>Add</h3>
-                    <form method="post" style={{display: 'flex', columnGap: '10px', marginTop: "10px"}}>
+                    <form method="post" className="add-moderator-form">
                         <input type="hidden" name="action" value="add" />
                         <input type="text" name="username" placeholder="Username" required />
                         <button type="submit">Add</button>
@@ -177,25 +177,23 @@ export default function CommunityModeratorsPage({}) {
 function UserCard({ user, display_remove_button = false, display_make_owner_button = false }) {
     return (
         
-            <div class="moderator-card" style={{display: 'flex', justifyContent: 'space-between'}} >
-                <div style={{position: 'relative'}}>
-                    <span style={{}}>&#128100; {user.username}</span>
-                </div>
-                <div style={{display: 'flex', columnGap: '10px'}}>
+            <div class="moderator-card" >
+                <span>&#128100; {user.username}</span>
+                <div className="moderator-action-box">
                     {display_remove_button &&
-                        <form method="post" style={{display: 'inline-block'}}>
+                        <Form method="post">
                             <input type="hidden" name="moderator_id" value={user.user_id} />
                             <input type="hidden" name="action" value="remove" />
                             <button type="submit">Remove</button>
-                        </form>
+                        </Form>
                     }
                     {display_make_owner_button &&
 
-                        <form method="post" style={{display: 'inline-block'}}>
+                        <Form method="post">
                             <input type="hidden" name="moderator_id" value={user.user_id} />
                             <input type="hidden" name="action" value="promote" />
                             <button type="submit">Make owner</button>
-                        </form>
+                        </Form>
                     }
                 </div>               
             </div>

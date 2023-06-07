@@ -1,4 +1,5 @@
-import styleCss from "~/styles/card.css";
+import styleCss from "~/styles/card.base.css";
+import cardNarrowCss from "~/styles/card.narrow.css";
 import { json, redirect, status } from "@remix-run/node";
 import { useActionData, useLoaderData, useFetcher } from "@remix-run/react";
 import { getSession, commitSession } from "~/cookies";
@@ -16,6 +17,7 @@ export const meta = () => {
 
 export const links = () => [
     { rel: "stylesheet", href: styleCss },
+    { rel: "stylesheet", href: cardNarrowCss },
 ]
 
 export const loader = async ({ request }) => {

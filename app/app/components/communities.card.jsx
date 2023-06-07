@@ -1,4 +1,4 @@
-export default function CommunityCard({ key, community }) {
+export default function CommunityCard({ community }) {
     const fullUrl = 'communities/' + community.url;
     return (
         <div className="community-card">

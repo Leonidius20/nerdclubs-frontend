@@ -1,5 +1,9 @@
 import AddCategoryView from "../views/community/add.category.view";
+
+import cardCss from "~/styles/card.base.css";
+import cardNarrowCss from "~/styles/card.narrow.css"; 
 import formCss from "~/styles/forms.css";
+
 import { useActionData, useMatches } from "@remix-run/react";  
 import { createCategory } from "../models/categories.server";
 import { getCommunity } from "../models/communities.server";
@@ -11,6 +15,8 @@ export const meta = () => {
 };
 
 export const links = () => [
+    { rel: "stylesheet", href: cardCss },
+    { rel: "stylesheet", href: cardNarrowCss },
     { rel: "stylesheet", href: formCss },
 ];
 

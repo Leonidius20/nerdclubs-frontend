@@ -1,10 +1,12 @@
 import Card from "../components/card";
-import cardCss from "~/styles/card.css";
+import cardCss from "~/styles/card.base.css";
+import cardNarrowCss from "~/styles/card.narrow.css";
 import { json, redirect } from "@remix-run/node";
 import { isUserAuthenticated } from "../cookies";
 
 export const links = () => [
     { rel: "stylesheet", href: cardCss },
+    { rel: "stylesheet", href: cardNarrowCss },
 ];
 
 export const loader = async ({request}) => {

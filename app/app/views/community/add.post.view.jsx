@@ -46,7 +46,7 @@ export default function AddPostView({ message, communityUrl, categoryId, categor
                     {/*<textarea id="content" name="content" rows="3" required value={content} onChange={e => setContent(e.target.value)}></textarea>*/}
                     <Editable editor={editor}/>
                 </div>
-                <button type="submit">Add Post</button>
+                <button type="submit" className="main-action-button">Add Post</button>
             </Form>
         </Card>
     );

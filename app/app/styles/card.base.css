@@ -1,5 +1,5 @@
 main {
-    max-width: 400px;
+    
     /* centering */
     margin: auto;
     background-color: white;
@@ -36,17 +36,22 @@ h2 {
     border: none;
     height: 30px;
     font-size: large;
+   
+    height: 40px;
+    
+    text-decoration: none;
+    color: black;
+    text-align: center;
+    line-height: 40px;
+}
+
+.main-action-button {
     /* centering */
     margin: auto;
     display: block;
     margin-top: 30px;
     margin-bottom: 20px;
-    height: 40px;
     width: 45%;
-    text-decoration: none;
-    color: black;
-    text-align: center;
-    line-height: 40px;
 }
 
 .link-button:hover, .back-button:hover {
