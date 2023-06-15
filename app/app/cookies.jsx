@@ -9,6 +9,21 @@ export const { getSession, commitSession, destroySession } = createCookieSession
     },
 });
 
+export const isNotBannedOrThrow = async (request) => {
+    const session = await getSession(request.headers.get("Cookie"));
+    if (session && session.get("token")) {
+        const encodedToken = session.get("token");
+        const decodedToken = jwt_decode(encodedToken);
+        if (decodedToken["is_banned"] === true) {
+            throw redirect("/banned");
+        }
+        return true;
+    } else {
+        return true;
+    }
+}
+
+
 export const getToken = async (request) => {
     const session = await getSession(request.headers.get("Cookie"));
     if (session && session.get("token")) {

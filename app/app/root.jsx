@@ -14,6 +14,7 @@ import Navbar from "./components/navbar";
 import { isUserFullyAuthenticated } from "~/cookies";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import { isNotBannedOrThrow } from "./cookies";
 
 export const links = () => {
   return [{ rel: "stylesheet", href: globalStylesUrl }];
@@ -21,6 +22,14 @@ export const links = () => {
 
 export const loader = async ({ request }) => {
   const isUserLoggedIn = await isUserFullyAuthenticated(request); 
+
+  // check if accessing something other than /banned, /logout
+  const url = new URL(request.url);
+  const pathname = url.pathname;
+  if (pathname !== "/banned" && pathname !== "/logout") {
+    const isNotBanned = await isNotBannedOrThrow(request);
+  }
+  
   return json({ isUserLoggedIn, username: request._username });
 };
 
