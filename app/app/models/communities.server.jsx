@@ -1,4 +1,4 @@
-import { getWithOptionalAuthorization } from "./utils.server";
+import { deleteWithAuthorization, getWithOptionalAuthorization } from "./utils.server";
 import { get, postWithAuthorization } from "./utils.server";
 
 // load communities from server
@@ -27,4 +27,10 @@ export async function searchCommunities(query) {
 
 export async function getCommunity(request, url) {
     return getWithOptionalAuthorization(request, `communities/${url}`);
+}
+
+export async function deleteCommunity(request, community_id) {
+    return deleteWithAuthorization(request, `communities`, {
+        community_id,
+    });
 }

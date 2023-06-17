@@ -22,8 +22,8 @@ export default function RegisterSuggestionBiometric({}) {
         <Card title="Biometric auth">
             <p style={{marginTop: '15px'}}>Do you wish to enable biometric authentication? You will be able to log in without entering your login and password. You need JavaScript enabled and your browser should support this functionality. Biometric auth will be available on this device only.</p>
             <div className="card-action-block" style={{ display: 'flex', columnGap: '10px' }}>
-                <a href="/" className="link-button">Skip</a>
-                <a href="/register/biometric" className="link-button">Enable</a>
+                <a href="/" className="link-button main-action-button">Skip</a>
+                <a href="/register/biometric" className="link-button main-action-button">Enable</a>
             </div>
         </Card>
     );

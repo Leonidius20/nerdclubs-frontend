@@ -1,4 +1,4 @@
-import deleteCategory from "../models/categories.server";
+import { deleteCategory } from "../models/categories.server";
 import { getCommunity } from "../models/communities.server";
 import { redirect, json } from "@remix-run/node";
 

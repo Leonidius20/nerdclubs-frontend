@@ -5,6 +5,7 @@ import { getCommunity } from "../models/communities.server";
 import communityCardCss from "~/styles/community.page.css";
 import { getUserInfoOrNull } from "../cookies";
 import Card from "../components/card";
+import { getUserDataByToken } from "../models/user.server";
 
 export const links = () => [
     { rel: "stylesheet", href: communityCardCss },
@@ -15,12 +16,13 @@ export async function loader({ request, params }) {
         const community = await getCommunity(request, params.url);
         if (community.error) return json({ message: community.message });
         const id = community.id;
-        //const categories = await getCategories(id);
-
+        
         // get user
-        const thisUser = await getUserInfoOrNull(request);
 
-        return json({ community, /*categories*/ });
+        const user = await getUserDataByToken(request);
+        const isSiteAdmin = user?.privilege_level === 2;
+
+        return json({ community, isSiteAdmin });
     } catch (err) {
         console.log(err);
         return json({ message: "FR: " + err.message });
@@ -28,7 +30,7 @@ export async function loader({ request, params }) {
 }
 
 export default function CommunityParent() {
-    let { community, message } = useLoaderData();
+    let { community, message, isSiteAdmin } = useLoaderData();
 
     if (!community) message = "Community not found";
 
@@ -64,9 +66,14 @@ export default function CommunityParent() {
                         </div>
                         <div>
                             <a href={`/communities/${community.url}/moderators`}>Moderators</a>
+                            
                             {
                                 community.is_moderator &&
                                 <a href={`/communities/${community.url}/banned`}>Banned users</a>
+                            }
+                            {
+                                isSiteAdmin &&
+                                <a href={`/communities/${community.url}/delete`}>Delete group</a>
                             }
                         </div>
                     </div>

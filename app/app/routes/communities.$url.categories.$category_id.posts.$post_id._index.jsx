@@ -109,8 +109,8 @@ export const action = async ({ request, params }) => {
             const content = formData.get("content");
             
             const result = await createComment(request, post_id, content, parent_comment_id);
-            console.log("result", result);
-            return json({ message: result?.success ? "Comment created": "Failed to comment" });
+            
+            return json({  });
         } catch (err) {
             console.error(err);
             return json({ error: 2, message: "Internal server error (" + err.message  + ")" }, { status: 500 });
@@ -123,7 +123,7 @@ export const action = async ({ request, params }) => {
             console.log("comment_id", comment_id);
             console.log("is_positive", is_positive);
             const result = await createVoteForComment(request, comment_id, is_positive);
-            return json({ message: result.success ? "Vote created": "Failed to vote" });
+            return json({  });
         } catch (err) {
             console.error(err);
             return json({ error: 2, message: "Internal server error (" + err.message  + ")" }, { status: 500 });
