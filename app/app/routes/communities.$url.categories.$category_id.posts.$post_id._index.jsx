@@ -1,5 +1,5 @@
 import PostView from "../views/community/post.view";
-import { useLoaderData, useRouteLoaderData } from "@remix-run/react";
+import { useActionData, useLoaderData, useRouteLoaderData } from "@remix-run/react";
 import { getPost, getPostWithAuth, deletePost } from "../models/posts.server";
 import { getCategory } from "../models/categories.server";
 import { json, redirect } from "@remix-run/node";
@@ -10,10 +10,11 @@ import cardWideCss from "../styles/card.wide.css";
 
 import postCardCss from "../styles/post.card.css";
 import { createVoteForPost, getMyVoteForPost, getVotesForPost } from "../models/post.votes.server";
-import { getToken } from "../cookies";
-import { createComment, getCommentsForPost, getCommentsForPostWithUser } from "../models/comments.server";
+import { getToken, getUserInfoOrNull } from "../cookies";
+import { createComment, deleteComment, getCommentsForPost, getCommentsForPostWithUser } from "../models/comments.server";
 import { createVoteForComment } from "../models/comment.votes.server";
 import CommentsTree from "../components/comments.tree";
+import { getCommunity } from "../models/communities.server";
 
 export const handle = { hydrate: true };
 
@@ -56,6 +57,15 @@ export const loader = async ({ request, params }) => {
             comments = [];
         }
 
+        let isModerator = false;
+        let userId = null;
+        // get user id and also check if user is a moderator
+        const user = await getUserInfoOrNull(request);
+        if (user) {
+            userId = user.userId;
+        }
+
+
         return json({
             message,
             post,
@@ -66,6 +76,7 @@ export const loader = async ({ request, params }) => {
             iVoted,
             isMyVotePositive,
             comments,
+            userId,
         });
     } catch (err) {
         console.error(err);
@@ -74,7 +85,6 @@ export const loader = async ({ request, params }) => {
 }
 
 export const action = async ({ request, params }) => {
-    console.log("action");
     const { url, category_id, post_id } = params;
 
     const formData = await request.formData();
@@ -125,13 +135,25 @@ export const action = async ({ request, params }) => {
         } catch (err) {
             return redirect(`?message=${err.message}`);
         }
+    } else if (type === "delete-comment") {
+        try {
+            const comment_id = formData.get("comment_id");
+            const res = await deleteComment(request, comment_id);
+            return json({ });
+        } catch (err) {
+            return redirect(`?message=${err.message}`);
+        }
     } else {
         return json({ error: 3, message: "Unknown action type" }, { status: 500 });
     }
 }
 
 export default function Post() {
-    const { message, post, category, url, rating, votingAvailable, iVoted, isMyVotePositive, comments } = useLoaderData();
+    const { message, post, category, url, rating, votingAvailable, iVoted, isMyVotePositive, comments, userId } = useLoaderData();
+
+    const actionMessage = useActionData()?.message;
+
+    const messageToShow = actionMessage || message;
 
     // get community info from loader data
     const { community } = useRouteLoaderData('routes/communities.$url');
@@ -139,8 +161,8 @@ export default function Post() {
 
     return (
         <>
-            <PostView message={message} post={post} category={category} community_url={url} rating={rating} votingAvailable={votingAvailable} iVoted={iVoted} isMyVotePositive={isMyVotePositive} isOwner={is_owner} isModerator={is_moderator}/>
-            <CommentsTree comments={comments} votingAvailable={votingAvailable} />
+            <PostView message={messageToShow} post={post} category={category} community_url={url} rating={rating} votingAvailable={votingAvailable} iVoted={iVoted} isMyVotePositive={isMyVotePositive} isOwner={is_owner} isModerator={is_moderator}/>
+            <CommentsTree comments={comments} votingAvailable={votingAvailable} isViewerModerator={is_moderator} viewerUserId={userId} />
         </>
     );
 }
