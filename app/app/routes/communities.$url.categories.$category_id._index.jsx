@@ -1,4 +1,4 @@
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useRouteLoaderData } from "@remix-run/react";
 import CategoryView from "../views/community/category.view";
 import { getCategory } from "../models/categories.server";
 import { json } from "@remix-run/node";
@@ -38,5 +38,9 @@ export const loader = async ({ request, params }) => {
 
 export default function Category() {
     const { message, communityUrl, category, posts, isUserLoggedIn } = useLoaderData(); 
-    return <CategoryView message={message} communityUrl={communityUrl} category={category} posts={posts} isUserLoggedIn={isUserLoggedIn} />
+
+    const { community } = useRouteLoaderData('routes/communities.$url');
+    const { is_owner, is_moderator } = community;
+
+    return <CategoryView message={message} communityUrl={communityUrl} category={category} posts={posts} isUserLoggedIn={isUserLoggedIn} isUserModerator={community.is_moderator} />
 }

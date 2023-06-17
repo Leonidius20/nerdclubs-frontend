@@ -2,7 +2,7 @@ import OptionalErrorMessage from "../../components/optional.error.message";
 import ParsedDate from "../../components/date";
 import markdownToTxt from 'markdown-to-txt';
 
-export default function CategoryView({ message, communityUrl, category, posts, isUserLoggedIn }) {
+export default function CategoryView({ message, communityUrl, category, posts, isUserLoggedIn, isUserModerator }) {
     return (
         <main>
             <OptionalErrorMessage message={message} />
@@ -11,12 +11,18 @@ export default function CategoryView({ message, communityUrl, category, posts, i
                     <h2>{category.name}</h2>
                     <p>{category.description}</p>
                 </div>
-                {
-                    isUserLoggedIn &&
-                    <div>
+                <div style={{display: 'flex', columnGap: '15px'}}>
+                    {
+                        isUserModerator &&
+                        <a href={`/communities/${communityUrl}/categories/${category.id}/delete`} className="link-button">Delete category</a>
+                    }
+                    {
+                        isUserLoggedIn &&
                         <a href={`/communities/${communityUrl}/categories/${category.id}/addpost`}  className="link-button">+ Add post</a>
-                    </div>
-                }
+                        
+                    }
+                </div>
+                
             </div>
             
             
