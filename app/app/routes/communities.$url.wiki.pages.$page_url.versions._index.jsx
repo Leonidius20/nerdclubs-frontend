@@ -58,7 +58,7 @@ export default function WikiPageVersions() {
         {wikiPageVersions.map(version => (
             <div class="category community-card" key={version} style={{display: 'flex', justifyContent: 'space-between'}}>
                 <div>
-                    <a href={`versions/${version.wiki_page_version_id}`}>
+                    <a href={`${version.wiki_page_version_id}`}>
                         <h3><ParsedDate dateString={version.last_modified}/> ({version.title})</h3>
                     </a>
                     <p>Modified by: {version.last_editor_username}</p>

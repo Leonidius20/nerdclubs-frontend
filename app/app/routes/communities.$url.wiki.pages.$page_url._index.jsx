@@ -8,6 +8,7 @@ import { useLoaderData } from '@remix-run/react';
 import Markdown from 'markdown-to-jsx';
 import List from '../components/list';
 import { isUserAuthenticated } from '../cookies';
+import WikiPageView from '../views/community/wiki.page.view';
 
 export const links = () => [
     { rel: "stylesheet", href: wideCardCss },
@@ -55,11 +56,7 @@ export default function WikiPage() {
     return (
         <div className='wiki-page-body'>
         
-            <Card title={page.title} message={message}>
-                <article className='content'>
-                    <Markdown>{page.content}</Markdown>
-                </article>
-            </Card>
+            <WikiPageView title={page.title} content={page.content} message={message}/>
             <aside>
                 <h3>This page</h3>
                 <ul>
