@@ -1,4 +1,4 @@
-import { get, getWithAuthorization, postWithAuthorization } from "./utils.server";
+import { deleteWithAuthorization, get, getWithAuthorization, postWithAuthorization } from "./utils.server";
 
 export async function getCommentsForPost(post_id) {
     return await get(`comments/${post_id}`);
@@ -19,4 +19,10 @@ export async function createComment(request, post_id, content, parent_comment_id
     }
 
     return await postWithAuthorization(request, `comments`, body);
+}
+
+export async function deleteComment(request, comment_id) {
+    return await deleteWithAuthorization(request, `comments`, {
+        comment_id,
+    });
 }

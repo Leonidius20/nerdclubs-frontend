@@ -4,14 +4,11 @@ import { Form, useActionData, useSearchParams } from "@remix-run/react";
 import { isUserFullyAuthenticated, isUserAuthenticated, is2faEnabled } from "~/cookies";
 import { register } from "~/utils/auth.server";
 import { getSession, commitSession } from "~/cookies";
+import Card from "../../components/card";
 
 export default function RegisterView({ errrorMessage }) {
     return (
-        <main>
-            <h1>Register</h1>
-            <div id="error-message-box">
-                {errrorMessage && <p role="alert">{errrorMessage}</p>}
-            </div>
+        <Card title="Register" backUrl="/" message={errrorMessage}>
             <Form method="post">
                 <div>
                     <label htmlFor="username">Username</label>
@@ -31,8 +28,8 @@ export default function RegisterView({ errrorMessage }) {
                     <label htmlFor="password2">Repeat password</label>
                     <input type="password" id="password2" name="password2" placeholder="Repeat password" required />
                 </div>
-                <button type="submit">Register</button>
+                <button type="submit" className="main-action-button">Register</button>
             </Form>
-        </main>
+        </Card>
     )
 }

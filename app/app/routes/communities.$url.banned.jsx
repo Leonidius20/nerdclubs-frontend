@@ -1,11 +1,13 @@
-import { getUserInfoOrNull } from '../cookies';
-import { banUser, getAllBannedUsers, getUserByUsername, unbanUser } from '../models/user.server';
+import { getUserByUsername } from '../models/user.server';
+import { getCommunity } from '../models/communities.server';
+import { banUserInCommunity, getUsersBannedInCommunity, unbanUserInCommunity } from '../models/community.bans.server';
 import cardCss from '../styles/card.base.css';
 import mediumCardCss from '../styles/card.medium.css';
 import moderatorsListCss from '../styles/moderators.page.css';
 import { json } from '@remix-run/node';
 import { useActionData, useLoaderData } from '@remix-run/react';
 import BannedUsersView from '../views/banned.users.view';
+import { getUserInfoOrNull } from '../cookies';
 
 export const handle = { hydrate: true };
 
@@ -15,9 +17,13 @@ export const links = () => [
     { rel: 'stylesheet', href: moderatorsListCss },
 ];
 
-export const loader = async ({ request }) => {
+export const loader = async ({ request, params }) => {
     try {
-        const bannedUsers = await getAllBannedUsers(request);
+        const communityUrl = params.url;
+        const community = await getCommunity(request, communityUrl);
+        const communityId = community.id;
+        const bannedUsers = await getUsersBannedInCommunity(request, communityId);
+        
         if (bannedUsers.error) return json({ message: bannedUsers.message })
         return json({ bannedUsers });
     } catch (err) {
@@ -25,34 +31,34 @@ export const loader = async ({ request }) => {
     }
 }
 
-export const action = async ({ request }) => {  
+export const action = async ({ request, params }) => {  
     const form = await request.formData();
     const action = form.get('action');
     const username = form.get('username');
-
-    console.log(action, username);
     
+    const communityUrl = params.url;
+    const community = await getCommunity(request, communityUrl);
+    const communityId = community.id;
+  
     if (action === 'add') {
         try {
-            console.log('start of getting by username');
+            
             const user = await getUserByUsername(username);
             if (!user || user.error) return json({ message: user?.message || 'User not found' });
             const userId = user.user_id;
             const myUserId = (await getUserInfoOrNull(request))?.userId;
 
-            console.log('start of banning');
-            console.log(userId, myUserId);
             if (userId === myUserId) {
                 return json({ message: 'You cannot ban yourself' });
             }
-            await banUser(request, userId);
+            await banUserInCommunity(request, communityId, userId);
             return json({ message: 'User banned' });
         } catch (err) {
             return json({ message: err.message });
         }
     } else if (action === 'unban') {
         const userId = form.get('userId');
-        await unbanUser(request, userId);
+        await unbanUserInCommunity(request, communityId, userId);
         return json({ message: 'User unbanned' });
     } else {
         return json({ message: 'Invalid action' })
@@ -60,12 +66,12 @@ export const action = async ({ request }) => {
 }
 
 
-export default function GlobalBannedUsersPage() {
+export default function UsersBannedInCommunity() {
     const { message, bannedUsers } = useLoaderData();
     const feedbackMessage = useActionData()?.message;
 
     const messageToDisplay = feedbackMessage ? feedbackMessage : message;
-    const backUrl = '/';
+    const backUrl = './';
 
-    return <BannedUsersView title="Global Banned Users" bannedUsers={bannedUsers} messageToDisplay={messageToDisplay} backUrl={backUrl} />;
+    return <BannedUsersView title="Banned Users" bannedUsers={bannedUsers} messageToDisplay={messageToDisplay} backUrl={backUrl} />;
 }

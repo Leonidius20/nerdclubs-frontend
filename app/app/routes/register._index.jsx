@@ -1,4 +1,6 @@
 import stylesUrl from "~/styles/forms.css";
+import cardCss from "~/styles/card.base.css";
+import cardNarrow from "~/styles/card.narrow.css";
 import { json, redirect } from "@remix-run/node";
 import { useActionData, useSearchParams } from "@remix-run/react";
 import { isUserFullyAuthenticated, isUserAuthenticated, is2faEnabled } from "../cookies";
@@ -14,6 +16,8 @@ export const meta = () => {
 
 export const links = () => [
     { rel: "stylesheet", href: stylesUrl },
+    { rel: "stylesheet", href: cardCss },
+    { rel: "stylesheet", href: cardNarrow },
 ]
 
 export const loader = async ({ request }) => {

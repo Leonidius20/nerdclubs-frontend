@@ -59,3 +59,7 @@
 .comments-block > button {
     
 }
+
+.deleted-comment-text {
+    color: rgb(165, 165, 165);
+}

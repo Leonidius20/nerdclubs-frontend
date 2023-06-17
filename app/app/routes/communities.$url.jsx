@@ -4,6 +4,7 @@ import { useLoaderData } from "@remix-run/react";
 import { getCommunity } from "../models/communities.server";
 import communityCardCss from "~/styles/community.page.css";
 import { getUserInfoOrNull } from "../cookies";
+import Card from "../components/card";
 
 export const links = () => [
     { rel: "stylesheet", href: communityCardCss },
@@ -33,6 +34,14 @@ export default function CommunityParent() {
 
     //const [communityId, setCommunityId] = useState(community.id);
 
+    if (community.is_banned) {
+        return (
+            <Card title="Banned">
+                <p>You are banned from this community.</p>
+            </Card>
+        );
+    }
+
     return (
         <div>
             {
@@ -55,7 +64,10 @@ export default function CommunityParent() {
                         </div>
                         <div>
                             <a href={`/communities/${community.url}/moderators`}>Moderators</a>
-                           
+                            {
+                                community.is_moderator &&
+                                <a href={`/communities/${community.url}/banned`}>Banned users</a>
+                            }
                         </div>
                     </div>
                     <Outlet />
