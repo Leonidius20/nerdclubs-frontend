@@ -63,6 +63,7 @@ export default function Index() {
   }
 
   return (
+    <>
     <main>
       <Form method="post">
         <input type="search" name="query" placeholder="Search communities..." />
@@ -70,14 +71,16 @@ export default function Index() {
         {isUserLoggedIn && <a href="/create/community" className="link-button">Create new</a>}
       </Form>
       <CommunitiesList communities={communities} />
-      {
-        isAdmin && (
-          <footer>
-            <h2>Admin</h2>
-            <Link to="/admin/banned">Banned users</Link>
-          </footer>
-        )
-      }
+      
     </main>
+    {
+      isAdmin && (
+        <footer>
+          <h2>Admin functions</h2>
+          <Link to="/admin/banned">Banned users</Link>
+        </footer>
+      )
+    }
+    </>
   );
 }
