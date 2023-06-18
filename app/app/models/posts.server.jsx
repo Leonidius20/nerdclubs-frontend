@@ -1,7 +1,7 @@
 import { deleteWithAuthorization, get, getWithOptionalAuthorization, postWithAuthorization } from "./utils.server";
 
-export async function getPostsInCategory(category_id) {
-    return await get(`posts?category_id=${category_id}`);
+export async function getPostsInCategory(category_id, page = 1) {
+    return await get(`posts?category_id=${category_id}&page=${page}`);
 }
 
 export async function createPost(request, category_id, title, content) {

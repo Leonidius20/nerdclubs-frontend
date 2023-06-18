@@ -17,18 +17,22 @@ export const loader = async ({ request, params }) => {
     const categoryId = params.category_id;
 
     const isUserLoggedIn = await isUserAuthenticated(request);
+
+    const url = new URL(request.url);
+    const pageNumber = url.searchParams.get('page') || 1;
     
     try {
         // get category from server
         const category = await getCategory(categoryId);
 
         // get posts from server
-        const posts = await getPostsInCategory(categoryId);
+        const posts = await getPostsInCategory(categoryId, pageNumber);
 
         return json({
             communityUrl,
             category, posts,
             isUserLoggedIn,
+            pageNumber
         });
     } catch (error) {
         return json({ message: error.message });
@@ -37,10 +41,10 @@ export const loader = async ({ request, params }) => {
 }
 
 export default function Category() {
-    const { message, communityUrl, category, posts, isUserLoggedIn } = useLoaderData(); 
+    const { message, communityUrl, category, posts, isUserLoggedIn, pageNumber } = useLoaderData(); 
 
     const { community } = useRouteLoaderData('routes/communities.$url');
     const { is_owner, is_moderator } = community;
 
-    return <CategoryView message={message} communityUrl={communityUrl} category={category} posts={posts} isUserLoggedIn={isUserLoggedIn} isUserModerator={community.is_moderator} />
+    return <CategoryView message={message} communityUrl={communityUrl} category={category} posts={posts} isUserLoggedIn={isUserLoggedIn} isUserModerator={community.is_moderator} currentPage={pageNumber} />
 }

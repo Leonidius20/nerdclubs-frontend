@@ -130,3 +130,15 @@ button:hover, .link-button:hover {
 #error-message-box:empty {
     display: none;
 }
+
+/**
+ * Pagination component
+ */
+.pagination-controls {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.page-button-current {
+    font-weight: bold;
+}

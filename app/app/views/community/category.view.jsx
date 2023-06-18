@@ -1,8 +1,15 @@
 import OptionalErrorMessage from "../../components/optional.error.message";
 import ParsedDate from "../../components/date";
 import markdownToTxt from 'markdown-to-txt';
+import PaginationControls from "../../components/pagination.controls";
 
-export default function CategoryView({ message, communityUrl, category, posts, isUserLoggedIn, isUserModerator }) {
+export default function CategoryView({ message, communityUrl, category, posts, isUserLoggedIn, isUserModerator, currentPage }) {
+
+    let pageCount = 1;
+    if (posts && posts.length > 0) {
+        pageCount = Math.ceil(posts[0].full_results_count / 10);
+    }
+
     return (
         <main>
             <OptionalErrorMessage message={message} />
@@ -53,6 +60,8 @@ export default function CategoryView({ message, communityUrl, category, posts, i
                     </div>);
                 })}
             </div>
+
+            <PaginationControls pagesCount={pageCount} currentPage={currentPage} showLastPageButton style={{marginBottom: "20px"}}/>
         </main>
     )
 }
