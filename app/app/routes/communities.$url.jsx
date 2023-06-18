@@ -17,7 +17,7 @@ export async function loader({ request, params }) {
         if (community.error) return json({ message: community.message });
         const id = community.id;
         
-        // get user
+        
 
         const user = await getUserDataByToken(request);
         const isSiteAdmin = user?.privilege_level === 2;
@@ -65,6 +65,13 @@ export default function CommunityParent() {
                             <a href={`/communities/${community.url}/wiki/pages/main`}>Wiki</a>
                         </div>
                         <div>
+                            {
+                                community.is_subscribed ?
+                                    <a href={`/communities/${community.url}/unsubscribe`}>Unsubscribe</a> :
+                                    <a href={`/communities/${community.url}/subscribe`}>Subscribe</a>
+                                    
+
+                            }
                             <a href={`/communities/${community.url}/moderators`}>Moderators</a>
                             
                             {
