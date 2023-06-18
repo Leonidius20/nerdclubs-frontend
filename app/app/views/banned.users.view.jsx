@@ -1,7 +1,13 @@
 import { Form } from '@remix-run/react';
 import Card from '../components/card';
+import PaginationControls from '../components/pagination.controls';
 
-export default function BannedUsersView({ title, bannedUsers, messageToDisplay, backUrl }) {
+export default function BannedUsersView({ title, bannedUsers, messageToDisplay, backUrl, pageNumber }) {
+    let pageCount = 1;
+    if (bannedUsers && bannedUsers.length > 0) {
+        pageCount = Math.ceil(bannedUsers[0].full_results_count / 10);
+    }
+
     return (
         <Card title={title} backUrl={backUrl} message={messageToDisplay}>
             <Form method="post" className='add-moderator-form'>
@@ -14,6 +20,7 @@ export default function BannedUsersView({ title, bannedUsers, messageToDisplay, 
                     <BannedUser key={user.id} user={user} />
                 )
             }
+            <PaginationControls pagesCount={pageCount} currentPage={pageNumber} showLastPageButton/>
         </Card>
     );
 }

@@ -1,4 +1,4 @@
-export default function PaginationControls({ pagesCount, currentPage = 1, showLastPageButton = false, baseUrl = "" }) {
+export default function PaginationControls({ pagesCount, currentPage = 1, showLastPageButton = false, baseUrl = "?" }) {
 
     const firstPageToDisplay = Math.max(1, currentPage - 2);
     const lastPageToDisplay = Math.min(pagesCount, currentPage + 2);
@@ -7,7 +7,7 @@ export default function PaginationControls({ pagesCount, currentPage = 1, showLa
 
     return (
         <div className="pagination-controls" style={{display: 'flex', justifyContent: 'space-between'}}>
-            <a href={`${baseUrl}page=1`} className={1 == currentPage ? "page-button-current link-button" : "link-button"}>&lang;</a>
+            <a href={`${baseUrl}page=1`} className={1 == currentPage ? "page-button-current link-button" : "link-button"}>&lt;</a>
             <div style={{display: 'flex', columnGap: '10px'}}>
                 {
                     firstPageToDisplay > 1 && <span>...</span>
@@ -33,7 +33,7 @@ export default function PaginationControls({ pagesCount, currentPage = 1, showLa
             </div>
             {
                 showLastPageButton ?
-                <a href={`${baseUrl}page=${pagesCount}`} className={pagesCount == currentPage ? "page-button-current link-button" : "link-button"}>&rang;</a>
+                <a href={`${baseUrl}page=${pagesCount}`} className={pagesCount == currentPage ? "page-button-current link-button" : "link-button"}>&gt;</a>
                 :
                 <div></div>
             }

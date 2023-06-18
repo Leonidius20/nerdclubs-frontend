@@ -17,9 +17,12 @@ export const links = () => [
 
 export const loader = async ({ request }) => {
     try {
-        const bannedUsers = await getAllBannedUsers(request);
+        // get page number from url
+        const url = new URL(request.url);
+        const pageNumber = url.searchParams.get('page') || 1;
+        const bannedUsers = await getAllBannedUsers(request, pageNumber);
         if (bannedUsers.error) return json({ message: bannedUsers.message })
-        return json({ bannedUsers });
+        return json({ bannedUsers, pageNumber });
     } catch (err) {
         return json({ message: err.message });
     }
@@ -61,11 +64,11 @@ export const action = async ({ request }) => {
 
 
 export default function GlobalBannedUsersPage() {
-    const { message, bannedUsers } = useLoaderData();
+    const { message, bannedUsers, pageNumber } = useLoaderData();
     const feedbackMessage = useActionData()?.message;
 
     const messageToDisplay = feedbackMessage ? feedbackMessage : message;
     const backUrl = '/';
 
-    return <BannedUsersView title="Global Banned Users" bannedUsers={bannedUsers} messageToDisplay={messageToDisplay} backUrl={backUrl} />;
+    return <BannedUsersView title="Global Banned Users" bannedUsers={bannedUsers} messageToDisplay={messageToDisplay} backUrl={backUrl} pageNumber={pageNumber} />;
 }

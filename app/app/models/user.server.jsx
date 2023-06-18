@@ -12,8 +12,8 @@ export async function getUserByUsername(username) {
     return get(`users?username=${username}`);
 }
 
-export async function getAllBannedUsers(request) {
-    return getWithAuthorization(request, `users/banned`);
+export async function getAllBannedUsers(request, page = 1) {
+    return getWithAuthorization(request, `users/banned?page=${page}`);
 }
 
 export async function banUser(request, userId) {
