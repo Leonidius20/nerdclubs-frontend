@@ -1,8 +1,8 @@
 import { deleteWithAuthorization, getWithAuthorization, postWithAuthorization } from "./utils.server";
 
-export async function getUsersBannedInCommunity(request, communityId) {
+export async function getUsersBannedInCommunity(request, communityId, pageNumber = 1) {
     return getWithAuthorization(request, 
-        `community-admin/banned?community_id=${communityId}`);
+        `community-admin/banned?community_id=${communityId}&page=${pageNumber}`);
 }
 
 export async function banUserInCommunity(request, communityId, userId) {

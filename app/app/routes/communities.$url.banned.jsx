@@ -18,14 +18,17 @@ export const links = () => [
 ];
 
 export const loader = async ({ request, params }) => {
+    const url = new URL(request.url);
+    const pageNumber = url.searchParams.get('page') || 1;
+
     try {
         const communityUrl = params.url;
         const community = await getCommunity(request, communityUrl);
         const communityId = community.id;
-        const bannedUsers = await getUsersBannedInCommunity(request, communityId);
+        const bannedUsers = await getUsersBannedInCommunity(request, communityId, pageNumber);
         
         if (bannedUsers.error) return json({ message: bannedUsers.message })
-        return json({ bannedUsers });
+        return json({ bannedUsers, pageNumber });
     } catch (err) {
         return json({ message: err.message });
     }
@@ -67,11 +70,11 @@ export const action = async ({ request, params }) => {
 
 
 export default function UsersBannedInCommunity() {
-    const { message, bannedUsers } = useLoaderData();
+    const { message, bannedUsers, pageNumber } = useLoaderData();
     const feedbackMessage = useActionData()?.message;
 
     const messageToDisplay = feedbackMessage ? feedbackMessage : message;
     const backUrl = './';
 
-    return <BannedUsersView title="Banned Users" bannedUsers={bannedUsers} messageToDisplay={messageToDisplay} backUrl={backUrl} />;
+    return <BannedUsersView title="Banned Users" bannedUsers={bannedUsers} messageToDisplay={messageToDisplay} backUrl={backUrl} pageNumber={pageNumber}/>;
 }
