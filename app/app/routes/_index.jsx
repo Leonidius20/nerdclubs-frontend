@@ -8,6 +8,7 @@ import { Form } from "@remix-run/react";
 import CommunitiesList from "../components/communities.list";
 import { getCommunities, getNumberOfCommunities } from "../models/communities.server";
 import { getUserDataByToken } from "../models/user.server";
+import { useState } from "react";
 
 export const handle = { hydrate: true };
 
@@ -60,7 +61,7 @@ export const action = async ({ request }) => {
     //if (communities.error) return json({ message: communities.message });
 
     //return json({ communities });
-    return redirect(`/?query=${query}`);
+    return redirect(`/?query=${encodeURIComponent(query)}`);
   } catch (err) {
     console.log(err);
     return json({ message: "FR: " + err.message });
@@ -80,11 +81,13 @@ export default function Index() {
 
   const baseUrl = query ? `?query=${query}&` : "?";
 
+  const [searchQuery, setSearchQuery] = useState(query);
+
   return (
     <>
     <main>
       <Form method="post">
-        <input type="search" name="query" placeholder="Search communities..." value={query} />
+        <input type="search" name="query" placeholder="Search communities..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
         <button type="submit">Search</button>
         {isUserLoggedIn && <a href="/create/community" className="link-button">Create new</a>}
       </Form>
