@@ -60,8 +60,14 @@ export default function CategoryView({ message, communityUrl, category, posts, i
                     </div>);
                 })}
             </div>
-
-            <PaginationControls pagesCount={pageCount} currentPage={currentPage} showLastPageButton style={{marginBottom: "20px"}}/>
+            {
+                !posts || posts.length === 0 &&
+                <p style={{marginTop: "30px"}}>There are no posts in this category. You can add one by pressing + Add post.</p>
+            }
+            {
+                posts && posts.length > 0 &&
+                <PaginationControls pagesCount={pageCount} currentPage={currentPage} showLastPageButton style={{marginBottom: "20px"}}/>
+            }
         </main>
     )
 }
