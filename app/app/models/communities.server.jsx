@@ -34,3 +34,7 @@ export async function deleteCommunity(request, community_id) {
         community_id,
     });
 }
+
+export async function getNumberOfCommunities() {
+    return get(`community-count`);
+}
